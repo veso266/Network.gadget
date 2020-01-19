@@ -1,0 +1,5213 @@
+<!DOCTYPE html>
+<html class="detail-blog-post url-how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0 contents" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tales from the Evil Empire - How to work around the access denied cross-domain frame issue in ASP.NET Ajax 1.0</title> 
+    <!--[if lt IE 9]>
+<script src="//weblogs-asp.azureedge.net/node1/Themes/TheBootstrapMachine/Scripts/html5shiv.js?v=10638738030" type="text/javascript"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+<script src="//weblogs-asp.azureedge.net/node1/Themes/TheBootstrapMachine/Scripts/respond.min.js?v=10638738030" type="text/javascript"></script>
+<![endif]-->
+<meta content="Orchard" name="generator">
+<meta content="How to work around the access denied cross-domain frame issue in ASP.NET Ajax 1.0" name="og:title">
+<meta content="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0" name="og:url">
+<meta content="article" name="og:type">
+<meta content="summary" name="twitter:card">
+<meta content="Atlas,Microsoft AJAX Library" name="keywords">
+<meta content="Some users have run into an issue when hosting ASP.NET Ajax applications in a frame or iframe that's in a different domain from the top-level window. If you try to do that and browse to the page&amp;#160;&amp;#8230;" name="description">
+<link href="https://weblogs-asp.azureedge.net/node1/favicon.ico?v=10638738030" rel="shortcut icon" type="image/x-icon">
+<link href="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/styles.css" rel="stylesheet" type="text/css">
+
+<link rel="alternate" type="application/rss+xml" title="Tales from the Evil Empire" href="http://feeds.feedburner.com/talesfromtheevilempire">
+
+    <link href="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/bootstrap.htm" rel="stylesheet" type="text/css">
+<style>
+blockquote.comment {
+  font-size: 1em;
+}
+.zone-aside-first {margin-top: 24px;}
+#layout-featured {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.blog-posts h2, .tagged-posts h2, .pager {
+  clear:both;
+}
+@media (min-width: 768px) {
+  #layout-featured {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  #layout-featured {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  #layout-featured {
+    width: 1170px;
+  }
+}
+</style>
+<script type="text/javascript" async="" src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/ga.js"></script><script async="" src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/analytics.js"></script><script type="text/javascript" async="" src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/a.js"></script><script type="text/javascript" async="" src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/a_002.js"></script><style charset="utf-8" type="text/css" class="firebugResetStyles">/* See license.txt for terms of usage */
+/** reset styling **/
+.firebugResetStyles {
+    z-index: 2147483646 !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: block !important;
+    border: 0 none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    outline: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    position: fixed !important;
+    transform: rotate(0deg) !important;
+    transform-origin: 50% 50% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent none !important;
+    pointer-events: none !important;
+    white-space: normal !important;
+}
+style.firebugResetStyles {
+    display: none !important;
+}
+
+.firebugBlockBackgroundColor {
+    background-color: transparent !important;
+}
+
+.firebugResetStyles:before, .firebugResetStyles:after {
+    content: "" !important;
+}
+/**actual styling to be modified by firebug theme**/
+.firebugCanvas {
+    display: none !important;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    width: auto !important;
+    position: static !important;
+}
+
+.firebugLayoutBoxOffset {
+    opacity: 0.8 !important;
+    position: fixed !important;
+}
+
+.firebugLayoutLine {
+    opacity: 0.4 !important;
+    background-color: #000000 !important;
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+    width: 1px !important;
+    height: 100% !important;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+    width: 100% !important;
+    height: 1px !important;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px !important;
+    border-top: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px !important;
+    border-left: 1px solid #999999 !important;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBoxParent {
+    border-top: 0 none !important;
+    border-right: 1px dashed #E00 !important;
+    border-bottom: 1px dashed #E00 !important;
+    border-left: 0 none !important;
+    position: fixed !important;
+    width: auto !important;
+}
+
+.firebugRuler{
+    position: absolute !important;
+}
+
+.firebugRulerH {
+    top: -15px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 14px !important;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%13%88%00%00%00%0E%08%02%00%00%00L%25a%0A%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%04%F8IDATx%DA%EC%DD%D1n%E2%3A%00E%D1%80%F8%FF%EF%E2%AF2%95%D0D4%0E%C1%14%B0%8Fa-%E9%3E%CC%9C%87n%B9%81%A6W0%1C%A6i%9A%E7y%0As8%1CT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AATE9%FE%FCw%3E%9F%AF%2B%2F%BA%97%FDT%1D~K(%5C%9D%D5%EA%1B%5C%86%B5%A9%BDU%B5y%80%ED%AB*%03%FAV9%AB%E1%CEj%E7%82%EF%FB%18%BC%AEJ8%AB%FA'%D2%BEU9%D7U%ECc0%E1%A2r%5DynwVi%CFW%7F%BB%17%7Dy%EACU%CD%0E%F0%FA%3BX%FEbV%FEM%9B%2B%AD%BE%AA%E5%95v%AB%AA%E3E5%DCu%15rV9%07%B5%7F%B5w%FCm%BA%BE%AA%FBY%3D%14%F0%EE%C7%60%0EU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5JU%88%D3%F5%1F%AE%DF%3B%1B%F2%3E%DAUCNa%F92%D02%AC%7Dm%F9%3A%D4%F2%8B6%AE*%BF%5C%C2Ym~9g5%D0Y%95%17%7C%C8c%B0%7C%18%26%9CU%CD%13i%F7%AA%90%B3Z%7D%95%B4%C7%60%E6E%B5%BC%05%B4%FBY%95U%9E%DB%FD%1C%FC%E0%9F%83%7F%BE%17%7DkjMU%E3%03%AC%7CWj%DF%83%9An%BCG%AE%F1%95%96yQ%0Dq%5Dy%00%3Et%B5'%FC6%5DS%95pV%95%01%81%FF'%07%00%00%00%00%00%00%00%00%00%F8x%C7%F0%BE%9COp%5D%C9%7C%AD%E7%E6%EBV%FB%1E%E0(%07%E5%AC%C6%3A%ABi%9C%8F%C6%0E9%AB%C0'%D2%8E%9F%F99%D0E%B5%99%14%F5%0D%CD%7F%24%C6%DEH%B8%E9rV%DFs%DB%D0%F7%00k%FE%1D%84%84%83J%B8%E3%BA%FB%EF%20%84%1C%D7%AD%B0%8E%D7U%C8Y%05%1E%D4t%EF%AD%95Q%BF8w%BF%E9%0A%BF%EB%03%00%00%00%00%00%00%00%00%00%B8vJ%8E%BB%F5%B1u%8Cx%80%E1o%5E%CA9%AB%CB%CB%8E%03%DF%1D%B7T%25%9C%D5(%EFJM8%AB%CC'%D2%B2*%A4s%E7c6%FB%3E%FA%A2%1E%80~%0E%3E%DA%10x%5D%95Uig%15u%15%ED%7C%14%B6%87%A1%3B%FCo8%A8%D8o%D3%ADO%01%EDx%83%1A~%1B%9FpP%A3%DC%C6'%9C%95gK%00%00%00%00%00%00%00%00%00%20%D9%C9%11%D0%C0%40%AF%3F%EE%EE%92%94%D6%16X%B5%BCMH%15%2F%BF%D4%A7%C87%F1%8E%F2%81%AE%AAvzr%DA2%ABV%17%7C%E63%83%E7I%DC%C6%0Bs%1B%EF6%1E%00%00%00%00%00%00%00%00%00%80cr%9CW%FF%7F%C6%01%0E%F1%CE%A5%84%B3%CA%BC%E0%CB%AA%84%CE%F9%BF)%EC%13%08WU%AE%AB%B1%AE%2BO%EC%8E%CBYe%FE%8CN%ABr%5Dy%60~%CFA%0D%F4%AE%D4%BE%C75%CA%EDVB%EA(%B7%F1%09g%E5%D9%12%00%00%00%00%00%00%00%00%00H%F6%EB%13S%E7y%5E%5E%FB%98%F0%22%D1%B2'%A7%F0%92%B1%BC%24z3%AC%7Dm%60%D5%92%B4%7CEUO%5E%F0%AA*%3BU%B9%AE%3E%A0j%94%07%A0%C7%A0%AB%FD%B5%3F%A0%F7%03T%3Dy%D7%F7%D6%D4%C0%AAU%D2%E6%DFt%3F%A8%CC%AA%F2%86%B9%D7%F5%1F%18%E6%01%F8%CC%D5%9E%F0%F3z%88%AA%90%EF%20%00%00%00%00%00%00%00%00%00%C0%A6%D3%EA%CFi%AFb%2C%7BB%0A%2B%C3%1A%D7%06V%D5%07%A8r%5D%3D%D9%A6%CAu%F5%25%CF%A2%99%97zNX%60%95%AB%5DUZ%D5%FBR%03%AB%1C%D4k%9F%3F%BB%5C%FF%81a%AE%AB'%7F%F3%EA%FE%F3z%94%AA%D8%DF%5B%01%00%00%00%00%00%00%00%00%00%8E%FB%F3%F2%B1%1B%8DWU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*UiU%C7%BBe%E7%F3%B9%CB%AAJ%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5*%AAj%FD%C6%D4%5Eo%90%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5%86%AF%1B%9F%98%DA%EBm%BBV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%AD%D6%E4%F58%01%00%00%00%00%00%00%00%00%00%00%00%00%00%40%85%7F%02%0C%008%C2%D0H%16j%8FX%00%00%00%00IEND%AEB%60%82") repeat-x !important;
+    border-top: 1px solid #BBBBBB !important;
+    border-right: 1px dashed #BBBBBB !important;
+    border-bottom: 1px solid #000000 !important;
+}
+
+.firebugRulerV {
+    top: 0 !important;
+    left: -15px !important;
+    width: 14px !important;
+    height: 100% !important;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%0E%00%00%13%88%08%02%00%00%00%0E%F5%CB%10%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%06~IDATx%DA%EC%DD%D1v%A20%14%40Qt%F1%FF%FF%E4%97%D9%07%3BT%19%92%DC%40(%90%EEy%9A5%CB%B6%E8%F6%9Ac%A4%CC0%84%FF%DC%9E%CF%E7%E3%F1%88%DE4%F8%5D%C7%9F%2F%BA%DD%5E%7FI%7D%F18%DDn%BA%C5%FB%DF%97%BFk%F2%10%FF%FD%B4%F2M%A7%FB%FD%FD%B3%22%07p%8F%3F%AE%E3%F4S%8A%8F%40%EEq%9D%BE8D%F0%0EY%A1Uq%B7%EA%1F%81%88V%E8X%3F%B4%CEy%B7h%D1%A2E%EBohU%FC%D9%AF2fO%8BBeD%BE%F7X%0C%97%A4%D6b7%2Ck%A5%12%E3%9B%60v%B7r%C7%1AI%8C%BD%2B%23r%00c0%B2v%9B%AD%CA%26%0C%1Ek%05A%FD%93%D0%2B%A1u%8B%16-%95q%5Ce%DCSO%8E%E4M%23%8B%F7%C2%FE%40%BB%BD%8C%FC%8A%B5V%EBu%40%F9%3B%A72%FA%AE%8C%D4%01%CC%B5%DA%13%9CB%AB%E2I%18%24%B0n%A9%0CZ*Ce%9C%A22%8E%D8NJ%1E%EB%FF%8F%AE%CAP%19*%C3%BAEKe%AC%D1%AAX%8C*%DEH%8F%C5W%A1e%AD%D4%B7%5C%5B%19%C5%DB%0D%EF%9F%19%1D%7B%5E%86%BD%0C%95%A12%AC%5B*%83%96%CAP%19%F62T%86%CAP%19*%83%96%CA%B8Xe%BC%FE)T%19%A1%17xg%7F%DA%CBP%19*%C3%BA%A52T%86%CAP%19%F62T%86%CA%B0n%A9%0CZ%1DV%C6%3D%F3%FCH%DE%B4%B8~%7F%5CZc%F1%D6%1F%AF%84%F9%0F6%E6%EBVt9%0E~%BEr%AF%23%B0%97%A12T%86%CAP%19%B4T%86%CA%B8Re%D8%CBP%19*%C3%BA%A52huX%19%AE%CA%E5%BC%0C%7B%19*CeX%B7h%A9%0C%95%E1%BC%0C%7B%19*CeX%B7T%06%AD%CB%5E%95%2B%BF.%8F%C5%97%D5%E4%7B%EE%82%D6%FB%CF-%9C%FD%B9%CF%3By%7B%19%F62T%86%CA%B0n%D1R%19*%A3%D3%CA%B0%97%A12T%86uKe%D0%EA%B02*%3F1%99%5DB%2B%A4%B5%F8%3A%7C%BA%2B%8Co%7D%5C%EDe%A8%0C%95a%DDR%19%B4T%C66%82fA%B2%ED%DA%9FC%FC%17GZ%06%C9%E1%B3%E5%2C%1A%9FoiB%EB%96%CA%A0%D5qe4%7B%7D%FD%85%F7%5B%ED_%E0s%07%F0k%951%ECr%0D%B5C%D7-g%D1%A8%0C%EB%96%CA%A0%A52T%C6)*%C3%5E%86%CAP%19%D6-%95A%EB*%95q%F8%BB%E3%F9%AB%F6%E21%ACZ%B7%22%B7%9B%3F%02%85%CB%A2%5B%B7%BA%5E%B7%9C%97%E1%BC%0C%EB%16-%95%A12z%AC%0C%BFc%A22T%86uKe%D0%EA%B02V%DD%AD%8A%2B%8CWhe%5E%AF%CF%F5%3B%26%CE%CBh%5C%19%CE%CB%B0%F3%A4%095%A1%CAP%19*Ce%A8%0C%3BO*Ce%A8%0C%95%A12%3A%AD%8C%0A%82%7B%F0v%1F%2FD%A9%5B%9F%EE%EA%26%AF%03%CA%DF9%7B%19*Ce%A8%0C%95%A12T%86%CA%B8Ze%D8%CBP%19*Ce%A8%0C%95%D1ae%EC%F7%89I%E1%B4%D7M%D7P%8BjU%5C%BB%3E%F2%20%D8%CBP%19*Ce%A8%0C%95%A12T%C6%D5*%C3%5E%86%CAP%19*Ce%B4O%07%7B%F0W%7Bw%1C%7C%1A%8C%B3%3B%D1%EE%AA%5C%D6-%EBV%83%80%5E%D0%CA%10%5CU%2BD%E07YU%86%CAP%19*%E3%9A%95%91%D9%A0%C8%AD%5B%EDv%9E%82%FFKOee%E4%8FUe%A8%0C%95%A12T%C6%1F%A9%8C%C8%3D%5B%A5%15%FD%14%22r%E7B%9F%17l%F8%BF%ED%EAf%2B%7F%CF%ECe%D8%CBP%19*Ce%A8%0C%95%E1%93~%7B%19%F62T%86%CAP%19*Ce%A8%0C%E7%13%DA%CBP%19*Ce%A8%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4%AE%A4%F5%25%C0%00%DE%BF%5C'%0F%DA%B8q%00%00%00%00IEND%AEB%60%82") repeat-y !important;
+    border-left: 1px solid #BBBBBB !important;
+    border-right: 1px solid #000000 !important;
+    border-bottom: 1px dashed #BBBBBB !important;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0 !important;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0 !important;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.fbProxyElement {
+    position: fixed !important;
+    pointer-events: auto !important;
+}
+</style></head> 
+<body cz-shortcut-listen="true">
+    
+    
+
+<div class="aside-1" id="layout-wrapper">
+<div id="layout-navigation" class="group">
+    <div class="zone zone-navigation">
+<article class="widget-navigation widget-menu-widget widget">
+    
+<nav role="navigation">
+    <div class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://weblogs.asp.net/bleroy/">Tales from the Evil Empire</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-responsive-collapse">
+                <ul class="navbar-nav nav menu menu-main-menu">
+                
+                
+<li class="first"><a href="https://weblogs.asp.net/bleroy/">Home</a>
+</li>
+<li class="last"><a href="https://weblogs.asp.net/bleroy/about">About</a>
+</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="https://weblogs.asp.net/bleroy/Users/Account/LogOn?ReturnUrl=%2Fbleroy%2Fhow-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0" rel="nofollow">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+</article></div>
+</div>
+<div id="layout-main-container">
+<div id="layout-main" class="group">
+    
+    <div id="layout-content" class="group">
+                        <div id="content" class="group">
+            <div class="zone zone-content">
+<article class="blog-post content-item">
+    <header>
+        
+
+
+
+
+<h1>How to work around the access denied cross-domain frame issue in ASP.NET Ajax 1.0</h1>
+
+            <div class="metadata">
+                <time class="clearfix" datetime="2007-01-31" pubdate="">Wednesday, January 31, 2007</time>
+
+<div class="tags">
+        <a class="tag label label-default" rel="tag" href="https://weblogs.asp.net/bleroy/Tags/Atlas">Atlas</a>
+        <a class="tag label label-default" rel="tag" href="https://weblogs.asp.net/bleroy/Tags/Microsoft%20AJAX%20Library">Microsoft AJAX Library</a>
+</div>
+            </div>
+    </header>
+    
+<p>Some users have run into an issue when hosting ASP.NET Ajax 
+applications in a frame or iframe that's in a different domain from the 
+top-level window. If you try to do that and browse to the page using IE,
+ you'll receive an "access denied" error client-side any time a DOM 
+event is raised in the frame. The code that's responsible for that is <a href="http://ajax.asp.net/docs/ClientReference/Sys.UI/DomElementClass/SysUIDomElementGetLocationMethod.aspx" mce_href="http://ajax.asp.net/docs/ClientReference/Sys.UI/DomElementClass/SysUIDomElementGetLocationMethod.aspx">Sys.UI.getLocation</a>.
+ This is a tricky piece of code that determines the pixel coordinates of
+ a DOM element relative to the top-left corner of the page, so that an 
+absolutely positioned child of the body using these coordinates would 
+exactly cover the element you measured. This is useful for drag &amp; 
+drop, popup scenarios like auto-complete and when an event is raised to 
+get mouse coordinates relative to the event source. This is this last 
+piece that explains the problem. The code in this method is different 
+for each of&nbsp;the browsers that we support because each one of them 
+has its own behavior that cannot be determined as we usually do by 
+dynamically looking at capabilities. You just have to know for 
+example&nbsp;that browser X is not counting an element's scroll position
+ if it's absolutely positioned and a direct child of body (names changed
+ to protect the guilty). That's the kind of problem we had to work 
+around.&nbsp;Luckily, IE has&nbsp;two very handy methods to retrieve 
+this kind of coordinates that enables us to bypass completely a number 
+of bugs that we just couldn't efficiently work around: <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp">getClientRects</a>, which gets all rectangles the element occupies on the page, and <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp">getBoundingClientRect</a>, which returns a single rectangle that bounds the whole element. In the method that we shipped, we've been using <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp">getClientRects</a>
+ and getting the first rectangle because we wanted to have consistent 
+behavior across browsers even if the element is a wrapping element such 
+as a span: in this case, the top-left corner of the element is the 
+top-left corner of the first bounding rectangle, which is different from
+ the top-left corner of the global bounding rectangle:</p>
+<p><img src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/BoundingRects_thumb5B85D.gif" mce_src="https://aspblogs.blob.core.windows.net/media/bleroy/WindowsLiveWriter/Howtoworkaroundthecrossdomainframeissu.0_C03F/BoundingRects_thumb%255B8%255D.gif" height="250" width="600"></p>
+<p>And this is where we made a mistake, unfortunately too late. There is a subtle difference between <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp">getClientRects</a> and <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp">getBoundingClientRect</a>, which is that <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp">getClientRects</a>, when in an iframe, gives coordinates that include the offset of that frame in the top window, whereas <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp">getBoundingClientRect</a>
+ gives the right coordinates directly. Both need to include the 
+frameborder to be perfectly accurate. To correct the behavior of <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getclientrects.asp">getClientRects</a>,
+ we had to look at the coordinates of the frame relative to the top 
+window, to subtract them, and this is the operation that is not allowed 
+if the frames are in different domains.</p>
+<p>The fix is to use <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp" mce_href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/dhtml/reference/methods/getboundingclientrect.asp">getBoundingClientRect</a>
+ instead, which will introduce a small inconsistency across browsers in 
+the case of wrapping elements but is a lot better than just failing. The
+ new version of the function still needs to try/catch around the code 
+that fixes the frameborder, so for cross-domain frames you may get a 2 
+pixel offset in the coordinates but this is the best you can get.</p>
+<h3>How to apply the fix</h3>
+<p>First, you’ll need to use the external script files instead of the 
+resource-based ones. You do this by setting a general ScriptPath on the 
+ScriptManager. The external script files can be found in the Microsoft 
+Ajax Library (<a href="http://ajax.asp.net/downloads/library/default.aspx?tabid=47&amp;subtabid=471" mce_href="http://ajax.asp.net/downloads/library/default.aspx?tabid=47&amp;subtabid=471">http://ajax.asp.net/downloads/library/default.aspx?tabid=47&amp;subtabid=471</a>)
+ which is under the MSPL (which allows you to modify the files). Copy 
+the System.Web.Extensions folder found in the Library zip into the 
+folder you pointed ScriptPath to.</p>
+<p>Alternatively, if you don't want to have all your script references 
+path-based, you can point only the core framework to a file and leave 
+the others to use web resources as usual. This makes&nbsp;things easier 
+when using other resource-based libraries such as the toolkit. This is 
+easily done by adding the following script reference to your script 
+manager:</p>
+<p><font color="#0000ff">&lt;</font><font color="#a31515">asp</font><font color="#0000ff">:</font><font color="#a31515">ScriptReference<br></font><font color="#0000ff">&nbsp;&nbsp;&nbsp; </font><font color="#ff0000">Name</font><font color="#0000ff">="MicrosoftAjax.js" </font><font color="#ff0000">ScriptMode</font><font color="#0000ff">="Auto"<br>&nbsp;&nbsp;&nbsp; </font><font color="#ff0000">Path</font><font color="#0000ff">="~/<font style="BACKGROUND-COLOR: yellow" color="#000000">[Your Script Directory]</font>/System.Web.Extensions/1.0.61025.0/MicrosoftAjax.js"</font><font color="#0000ff">/&gt;</font></p>
+<p>Of course, don't forget to replace the part of the path between the 
+brackets with the name of the script directory you chose. Don't set a 
+ScriptPath on the script manager if you choose to use this script 
+reference.&nbsp;</p>
+<p>Once you’ve done that, you can check that the application still works
+ and loads the script from the new location using a network monitoring 
+tool such as <a href="http://www.fiddlertool.com/fiddler/" mce_href="http://www.fiddlertool.com/fiddler/">Fiddler</a>. </p>
+<p>The second step is to patch the files. You’ll need to patch the debug and release versions. </p>
+<p>The debug version is MicrosoftAjax.debug.js. Look for the following code:</p><pre><span style="COLOR: #0000ff">switch</span>(Sys.Browser.agent) {
+    <span style="COLOR: #0000ff">case</span> Sys.Browser.InternetExplorer:
+</pre>
+<p>then replace everything between that and "case Sys.Browser.Safari:" with the following code:</p><pre>Sys.UI.DomElement.getLocation = <span style="COLOR: #0000ff">function</span>(element) {
+    <span style="COLOR: #0000ff">if</span> (element.<span style="COLOR: #0000ff">self</span> || element.nodeType === 9) <span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(0,0);
+    <span style="COLOR: #0000ff">var</span> clientRect = element.getBoundingClientRect();
+    <span style="COLOR: #0000ff">if</span> (!clientRect) {
+        <span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(0,0);
+    }
+    <span style="COLOR: #0000ff">var</span> ownerDocument = element.<span style="COLOR: #0000ff">document</span>.documentElement;
+    <span style="COLOR: #0000ff">var</span> offsetX = clientRect.left - 2 + ownerDocument.scrollLeft,
+        offsetY = clientRect.<span style="COLOR: #0000ff">top</span> - 2 + ownerDocument.scrollTop;
+    
+    <span style="COLOR: #0000ff">try</span> {
+        <span style="COLOR: #0000ff">var</span> f = element.ownerDocument.parentWindow.frameElement || <span style="COLOR: #0000ff">null</span>;
+        <span style="COLOR: #0000ff">if</span> (f) {
+            <span style="COLOR: #0000ff">var</span> offset = 2 - (f.frameBorder || 1) * 2;
+            offsetX += offset;
+            offsetY += offset;
+        }
+    }
+    <span style="COLOR: #0000ff">catch</span>(ex) {
+    }    
+    
+    <span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(offsetX, offsetY);
+}
+<span style="COLOR: #0000ff">break</span>;
+</pre>
+<p>For the release version (MicrosoftAjax.js), the process is pretty 
+much the same except that the file is a little more difficult to 
+manipulate. Look for "switch(Sys.Browser.agent){case 
+Sys.Browser.InternetExplorer:" and replace everything between that and 
+"case Sys.Browser.Safari:" with the following: </p>
+<p>Sys.UI.DomElement.getLocation=<span style="COLOR: #0000ff">function</span>(a){<span style="COLOR: #0000ff">if</span>(a.<span style="COLOR: #0000ff">self</span>||a.nodeType===9)<span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(0,0);<span style="COLOR: #0000ff">var</span> b=a.getBoundingClientRect();<span style="COLOR: #0000ff">if</span>(!b)<span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(0,0);<span style="COLOR: #0000ff">var</span> c=a.<span style="COLOR: #0000ff">document</span>.documentElement,d=b.left-2+c.scrollLeft,e=b.<span style="COLOR: #0000ff">top</span>-2+c.scrollTop;<span style="COLOR: #0000ff">try</span>{<span style="COLOR: #0000ff">var</span> g=a.ownerDocument.parentWindow.frameElement||<span style="COLOR: #0000ff">null</span>;<span style="COLOR: #0000ff">if</span>(g){<span style="COLOR: #0000ff">var</span> f=2-(g.frameBorder||1)*2;d+=f;e+=f}}<span style="COLOR: #0000ff">catch</span>(h){}<span style="COLOR: #0000ff">return</span> <span style="COLOR: #0000ff">new</span> Sys.UI.Point(d,e)};<span style="COLOR: #0000ff">break</span>;</p>
+<p>(no line breaks) </p>
+<p>The site should now work without the exceptions. </p>
+<h3>Known issues with that fix</h3>
+<ul>
+<li>Coordinates returned by Sys.UI.DomElement.getLocation may be off by 
+two pixels in some scenarios involving frames from different domains. </li>
+<li>The patched implementation returns the upper left coordinates of the
+ bounding box around the element instead of the upper left corner of the
+ first rectangle of the element, which can be different for wrappable 
+elements. This is inconsistent with what the function returns on other 
+browsers.</li>
+<li>If you enable script localization on the script manager, it will 
+generate a request for a localized version of the Ajax script, which 
+will not exist because we haven't shipped localized versions of the 
+standalone script files yet. You can work around this by renaming the 
+files MicrosoftAjax.en.js and MicrosoftAjax.debug.en.js and adding 
+ResourceUICultures="en" to the script reference. Don't change the path 
+or name.</li></ul>
+<h3>Important disclaimer</h3>
+<p>This fix implies that you stop using the resource-based scripts and 
+use the static file versions instead.&nbsp; I expect this is the fix 
+that will be in the next service release, so when the next release of 
+System.Web.Extensions happens, you will want to revert to using the 
+resource-based scripts to get any other fixes or changes that are made.</p>
+<p><strong>UPDATE: </strong>added a way to replace just the core framework file.</p>
+<p><strong>UPDATE 2:</strong> The toolkit had a similar bug, and now provides a similar workaround: <a href="http://blogs.msdn.com/delay/archive/2007/02/05/safely-avoiding-the-access-denied-dialog-how-to-work-around-the-access-denied-cross-domain-iframe-issue-in-the-ajax-control-toolkit.aspx" mce_href="http://blogs.msdn.com/delay/archive/2007/02/05/safely-avoiding-the-access-denied-dialog-how-to-work-around-the-access-denied-cross-domain-iframe-issue-in-the-ajax-control-toolkit.aspx">http://blogs.msdn.com/delay/archive/2007/02/05/safely-avoiding-the-access-denied-dialog-how-to-work-around-the-access-denied-cross-domain-iframe-issue-in-the-ajax-control-toolkit.aspx</a></p>
+<p><strong>UPDATE 3: </strong>made the release patching procedure 
+clearer based on Atanu's comment. Apologies to everyone who hit this and
+ thanks to Atanu for pointing it out.</p>
+<p><strong>UPDATE 4:</strong> added known issue with localization and how to work around it.</p>
+<p><strong>UPDATE 5: </strong>this is fixed in ASP.NET 3.5.</p>
+</article></div>
+        </div>
+                <div id="after-content">
+            <div class="zone zone-after-content">
+
+<h2 class="comment-count">175 Comments</h2>
+<ul class="comments"><li class="first ">
+
+
+<blockquote class="comment comment-3519">
+
+    
+
+<p class="text">
+Good article. Hopefully Microsoft will fix this ASAP. Let's wait together <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://pohee.com/" rel="nofollow">PohEe,com</a></strong></span>
+        - <span class="when"><time datetime="2007-02-01T01:45:18.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3519">Thursday, February 1, 2007 1:45:18 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3520">
+
+    
+
+<p class="text">
+Hm, applying this workaround confuses me a bit, because somehow, if i 
+begin to add global path to script manager, i need to collect all 
+scripts into one folder, which i do not want to do. <br>
+Best way is to have just core framework script modified, it looks like 
+.net2 then wants every single script &amp;quot;pathed&amp;quot; as 
+well... why it does not take the rest from default resources as usual?? 
+I&amp;#39;m puzzled <br>
+many thanks if you can help, <br>
+Alex <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Alex</strong></span>
+        - <span class="when"><time datetime="2007-02-05T09:09:59.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3520">Monday, February 5, 2007 9:09:59 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3521">
+
+    
+
+<p class="text">
+(this is Alex again :) <br>
+Have managed to make this error gone for a while. A thing why the rest 
+of script did not want to load was because VWD Express test server wants
+ addresses in ~/path/path format, while IIS consumes /path/path . So 
+this is fixed. <br>
+However, same &amp;quot;access denied&amp;quot; reappeared when 
+autocomplete textbox (living inside frame) calls webservice to fill a 
+list. <br>
+PS. Site has same as yours structure- parent page has frame with my [other domain] ajax site... <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>alex.lee</strong></span>
+        - <span class="when"><time datetime="2007-02-05T09:41:06.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3521">Monday, February 5, 2007 9:41:06 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3522">
+
+    
+
+<p class="text">
+Bertrand, you seem to be my only hope :) <br>
+2 my previous posts are rather chaotic, so excuse me. <br>
+To summarise, not just your pointed framework script fails in iframe on IE, but Common script for toolbox as well: <br>
+[...] when autocomplete tries to place results, it uses this part of code of this script: <br>
+getLocation : function(element) { <br>
+[...]&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;b&amp;gt;if
+ (element.ownerDocument.parentWindow.frameElement)&amp;lt;/b&amp;gt; { <br>
+[...]&amp;nbsp;&amp;nbsp;&amp;nbsp;} <br>
+=== <br>
+Bold line already fails and i believe, what follows will fail as well. <br>
+So, my prob is how to correct script and where to specify path to consume corrected version? (similar to yours task)...  <br>
+Many thanks! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>alex.lee</strong></span>
+        - <span class="when"><time datetime="2007-02-05T11:42:54.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3522">Monday, February 5, 2007 11:42:54 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3523">
+
+    
+
+<p class="text">
+Alex: the code you posted is the *old, unpatched* code. So you either 
+did not correctly set up your script reference or you didn't patch the 
+file. You can drop me e-mail through the contact form if necessary. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-05T19:23:55.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3523">Monday, February 5, 2007 7:23:55 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3524">
+
+    
+
+<p class="text">
+I am having the same issue as Alex. Your patch corrected the issue with 
+the inital page load, but now I get the same Access Denied message when 
+any AjaxToolkit control is used. The AjaxToolkit has it's own 
+getLocation definition, which eventually calls the Framework's 
+getLocation but, is failing before it gets to the call. The AjaxToolkit 
+getLocation is defined in Common.js. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Chris</strong></span>
+        - <span class="when"><time datetime="2007-02-05T19:50:58.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3524">Monday, February 5, 2007 7:50:58 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3525">
+
+    
+
+<p class="text">
+Nice article, but I could never get approval to implement it this way.  I
+ hope MS can fix this soon.  I was trying to use the AjaxControlToolkit 
+to mask some textboxes in an iframe that was embedded on a Micrsoft CRM 
+form.  For now, I commented out the Extenders until this can be fixed.  
+Still, keep up the good work. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Mike</strong></span>
+        - <span class="when"><time datetime="2007-02-08T01:00:38.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3525">Thursday, February 8, 2007 1:00:38 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3526">
+
+    
+
+<p class="text">
+Mike: the next version of the toolkit will contain the fix, which may be your best best as I see you're using it. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-09T19:12:28.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3526">Friday, February 9, 2007 7:12:28 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3527">
+
+    
+
+<p class="text">
+Alpesh: If you're trying to set-up an event for an element that is in a 
+different window/frame, there is a known issue with that. Please contact
+ me to check if that's the same problem you're hitting and how to work 
+around it. You can use the contact form to drop me e-mail. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-10T00:18:33.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3527">Saturday, February 10, 2007 12:18:33 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3528">
+
+    
+
+<p class="text">
+The following error occurs when hitting links, selecting tabs on this 
+page.  Which we determined to be a cross domain scripting issue within 
+an iFrame. <br>
+ <br>
+ Access is Denied <br>
+ <br>
+We applied the fix found above and added the “Systems.Web.Extensions” folder to our solution  <br>
+ <br>
+Amended the appropriate JS files as per the fix <br>
+ <br>
+Added a ScriptPath attribute to the ScriptManager Tag to point to the relevant location <br>
+ <br>
+ <br>
+ <br>
+Retested the page and checked the appropriate script links were all pointing to the correct and newly added path. <br>
+ <br>
+This tested succussfully. <br>
+ <br>
+ <br>
+However, as a result of applying this fix we encountered a new problem. 
+ On loading the display.aspx page, the following Javascript error 
+occurs: <br>
+ <br>
+ Expected ';' <br>
+ <br>
+var $create=Sys.Component.create=function(h,f,d,c,g){var a=g?new h(g):new h,b=Sys.Application,i=b.get_isCreatingComponents(); <br>
+ <br>
+Followed by a further error Object expected <br>
+ <br>
+var $create=Sys.Component.create=function(h,f,d,c,g){var a=g?new h(g):new h, <br>
+ <br>
+This error is occuring in the MicrosoftAjax.js file we added and modified as described above. <br>
+ <br>
+As a further result…  Also on this page we use a  which is associated to
+ a  control which handles our Polling facility to check responses we 
+receive on a given interval.  This no longer functions, we assume the 
+two events are linked.      <br>
+ <br>
+Can anyone help me? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Thomas Coombs</strong></span>
+        - <span class="when"><time datetime="2007-02-14T14:08:37.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3528">Wednesday, February 14, 2007 2:08:37 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3529">
+
+    
+
+<p class="text">
+I've got the same problem, but the fix didn't help me. Because I was using frameborder="no" in my iframe. <br>
+ <br>
+I got the NaN exception. <br>
+ <br>
+The only fix ==&gt; frameborder="0" <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://goya.no/" rel="nofollow">Benny/Norway</a></strong></span>
+        - <span class="when"><time datetime="2007-02-14T14:59:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3529">Wednesday, February 14, 2007 2:59:31 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3530">
+
+    
+
+<p class="text">
+Thomas: I think you didn't apply the patch properly. What you replace in
+ the release version includes the switch, but you must not replace the 
+case Safari. <br>
+ <br>
+Benny: frameborder="no" is illegal XHTML. Please use "0". This is 
+actually a different problem (which doesn't cause "access denied") so 
+it's not surprising that the patch would not fix it. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-14T18:35:18.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3530">Wednesday, February 14, 2007 6:35:18 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3531">
+
+    
+
+<p class="text">
+Thanks very  much for your prompt response Bertrand. <br>
+ <br>
+I've checked the release version of the file, but the "case Sys.Browser.Safari" does still exist. <br>
+ <br>
+Sorry. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Thomas Coombs</strong></span>
+        - <span class="when"><time datetime="2007-02-15T08:45:59.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3531">Thursday, February 15, 2007 8:45:59 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3532">
+
+    
+
+<p class="text">
+Thomas, please contact me through the contact form of this blog. I'll look at your file. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-15T18:53:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3532">Thursday, February 15, 2007 6:53:20 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3533">
+
+    
+
+<p class="text">
+Does anyone have the full file working.  I am getting a Sys is undefined when using the Atlas toolkit  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Darren</strong></span>
+        - <span class="when"><time datetime="2007-02-15T22:40:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3533">Thursday, February 15, 2007 10:40:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3534">
+
+    
+
+<p class="text">
+I am getting 'Type' is undefined on the first line of 
+ScriptResource.axd.  Does this mean I misconfigured something and the js
+ files are not being used? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Carl</strong></span>
+        - <span class="when"><time datetime="2007-02-22T21:46:04.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3534">Thursday, February 22, 2007 9:46:04 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3535">
+
+    
+
+<p class="text">
+Carl: you probably made a mistake when patching the file, which created a
+ syntax error, or you did not put the MicrosoftAjax.js and 
+MicrosoftAjax.debug.js files at the right place. <br>
+The fact that you're seeing scriptresource.axd does not mean that the js
+ file is not being used: if you just replaced the MicrosoftAjax.js 
+reference, all other scripts will still use scriptresource.axd. What you
+ want to check is if MicrosoftAjax(.debug).js is being queried and if 
+the script tag in the html source as seen from the browser has its src 
+attribute set to the right url. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-02-22T22:23:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3535">Thursday, February 22, 2007 10:23:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3536">
+
+    
+
+<p class="text">
+I placed the entire folder System.Web.Extension in my sight then added a
+ ScriptPath Property to the directory all the way down to the js files. 
+ I also tried using the  from above.  Both result in the same issue. <br>
+ <br>
+I also receive the error prior to trying to path the files and after. <br>
+ <br>
+I just downloaded fiddler and I will try to see if I can see the debug file being accessed. <br>
+ <br>
+I also cleared all browser cache and cleaned my project. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Carl</strong></span>
+        - <span class="when"><time datetime="2007-02-22T22:38:47.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3536">Thursday, February 22, 2007 10:38:47 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3537">
+
+    
+
+<p class="text">
+Actually, I need more sleep and a spell checker built into the IDE.  
+Everything is now working all is well.  Fiddler is a great tool and 
+showed me the 404 error when tryin to access MicrosoftAjax.debug.js.  
+there fore I verified the path in the script manager and realized I had 
+added an 's' to a word.  Thanks for everything! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Carl</strong></span>
+        - <span class="when"><time datetime="2007-02-22T22:46:09.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3537">Thursday, February 22, 2007 10:46:09 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3538">
+
+    
+
+<p class="text">
+Has this now been fixed with the 3/2 release? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Darren</strong></span>
+        - <span class="when"><time datetime="2007-03-05T15:55:43.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3538">Monday, March 5, 2007 3:55:43 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3539">
+
+    
+
+<p class="text">
+Darren: what we released last week was an Orcas CTP that doesn't contain
+ any Ajax bits, so I suppose not. It will be fixed in the first Orcas 
+release that contains Ajax bits, which should be beta 1 as far as I 
+know. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-03-05T20:05:00.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3539">Monday, March 5, 2007 8:05:00 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3540">
+
+    
+
+<p class="text">
+When can we expect ASP.NET Ajax update with this fix? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Fedor</strong></span>
+        - <span class="when"><time datetime="2007-03-13T09:47:49.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3540">Tuesday, March 13, 2007 9:47:49 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3541">
+
+    
+
+<p class="text">
+Fedor: see above comment. The next release (Orcas beta) will have the fix. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-03-13T17:56:57.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3541">Tuesday, March 13, 2007 5:56:57 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3542">
+
+    
+
+<p class="text">
+Thanks, <br>
+ <br>
+It worked like a charm.  Our problem was running AJAX applications in 
+Page Viewer Web Parts under Sharepoint (WSS V3.0).  In case anyone else 
+is having the same issue.  The PopupControl Extender would not fire and 
+display the Calendar.  It would (of course) stand-along but not in the 
+Page Viewer Web Part. <br>
+ <br>
+Thanks again, <br>
+ <br>
+Mike Mattix <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Mike Mattix</strong></span>
+        - <span class="when"><time datetime="2007-03-16T18:12:49.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3542">Friday, March 16, 2007 6:12:49 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3543">
+
+    
+
+<p class="text">
+Thanks for this Bertrand, very useful article - problem sorted:-) <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Loraine</strong></span>
+        - <span class="when"><time datetime="2007-04-05T19:22:07.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3543">Thursday, April 5, 2007 7:22:07 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3544">
+
+    
+
+<p class="text">
+Leo: you probably introduced a syntax error when you patched the file. 
+Please double check your patched file. You can also look at all error 
+messages, you probably have a syntax error message before the undefined 
+message. That will give you the line number of the syntax error. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-04-25T17:06:12.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3544">Wednesday, April 25, 2007 5:06:12 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3545">
+
+    
+
+<p class="text">
+Yes. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-04-28T04:13:42.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3545">Saturday, April 28, 2007 4:13:42 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3546">
+
+    
+
+<p class="text">
+This only works for  in web.config. <br>
+If I try debug="false" I get the following error: <br>
+'Sys' is undefined, 'Type' is undefined. <br>
+ <br>
+Can you give me any help? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://blog.henrycordes.nl/" rel="nofollow">Henry Cordes</a></strong></span>
+        - <span class="when"><time datetime="2007-05-09T06:24:47.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3546">Wednesday, May 9, 2007 6:24:47 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="bg-info">
+
+
+<blockquote class="comment comment-3547">
+
+    
+
+<p class="text">
+Henry: that indicates a syntax error probably happened before. You 
+probably made a mistake when you patched the release version of the 
+file. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">bleroy</a></strong></span>
+        - <span class="when"><time datetime="2007-05-09T16:54:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3547">Wednesday, May 9, 2007 4:54:20 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3548">
+
+    
+
+<p class="text">
+NICE ONE <br>
+ITS HELPS ME AND MY PROBLEM IS RESOLVED BUT AFTER INCLUDING JS FILE, I START GETTING AN ERROR -- 'SYS IS UNDEFINED' <br>
+ <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>DEEPAK GUPTA</strong></span>
+        - <span class="when"><time datetime="2007-05-22T09:58:08.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3548">Tuesday, May 22, 2007 9:58:08 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3549">
+
+    
+
+<p class="text">
+Deepak: no need to shout. That indicates a syntax error. You probably made a mistake when you patched the file. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-05-22T17:50:17.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3549">Tuesday, May 22, 2007 5:50:17 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3550">
+
+    
+
+<p class="text">
+Marc: the fix is already in the Orcas Beta and will ship with all future versions. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-05-30T19:55:25.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3550">Wednesday, May 30, 2007 7:55:25 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3551">
+
+    
+
+<p class="text">
+Bertrand, <br>
+First of all, thank you for this article.  <br>
+ <br>
+I'm getting also Sys and Type undefined. I've rechecked my patch and 
+it's fine. I've already patched the AJAX Toolkit also. Could you please 
+look at: www.nortia.com.mx and tell me if you see the error.  <br>
+Any help would be appreciated. THANKS!! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Yendi</strong></span>
+        - <span class="when"><time datetime="2007-05-31T16:44:23.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3551">Thursday, May 31, 2007 4:44:23 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3552">
+
+    
+
+<p class="text">
+Oh, something I forgot.. My locale is ES-MX. Perhaps this is where I'm missing something?? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Yendi</strong></span>
+        - <span class="when"><time datetime="2007-05-31T16:48:49.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3552">Thursday, May 31, 2007 4:48:49 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3553">
+
+    
+
+<p class="text">
+Yendi: there doesn't seem to be a site there. Can you check the spelling of the url? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-05-31T16:52:28.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3553">Thursday, May 31, 2007 4:52:28 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3554">
+
+    
+
+<p class="text">
+Can you please tell me, i have put this changes in two files in my 
+solution explorer at script manager i have to point this reference to 
+the new file path, how can i give that, it is in my local, but iam 
+deploying at the remote system. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://How%20to%20give%20path%20" rel="nofollow">Gann</a></strong></span>
+        - <span class="when"><time datetime="2007-06-01T00:33:10.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3554">Friday, June 1, 2007 12:33:10 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3555">
+
+    
+
+<p class="text">
+Bertrand, thanks for this patch. However you are not clear at one point 
+in the posting above - which is why you are seeing folks leaving 
+comments about getting these errors with debug="false": <br>
+'Sys' is undefined, 'Type' is undefined <br>
+ <br>
+Bertrand writes: <br>
+Look for "switch(Sys.Browser.agent){case Sys.Browser.InternetExplorer:" 
+and replace everything between that and "case Sys.Browser.Safari:" with 
+the following:  <br>
+... followed by code <br>
+ <br>
+Unfortunately in that code he repeats this: <br>
+switch(Sys.Browser.agent){case Sys.Browser.InternetExplorer: <br>
+whereas what he probably meant to say was: Look for  <br>
+"switch(Sys.Browser.agent){case Sys.Browser.InternetExplorer:" and replace THAT AND EVERYTHING UPTO "case Sys.Browser.Safari:" <br>
+ <br>
+In case it isn't obvious, you need to ensure that switch(Sys.Browser.agent){case Sys.Browser.InternetExplorer: <br>
+is not repeated again - which is what will happen if you follow his 
+directions to the letter. In that case, you will get these errors with 
+debug="false": <br>
+'Sys' is undefined, 'Type' is undefined <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Atanu</strong></span>
+        - <span class="when"><time datetime="2007-06-01T02:30:56.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3555">Friday, June 1, 2007 2:30:56 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3556">
+
+    
+
+<p class="text">
+Yendi: thanks for the feedback, there's indeed a problem if you enable 
+localization. See the updated known issues at the end of the post for a 
+workaround. <br>
+ <br>
+Gann: I'm sorry, but could you please rephrase your question? I'm not 
+sure I'm following you. Did you deploy the script files on the remote 
+system? <br>
+ <br>
+Atanu: thanks for the detective work, I should have seen that one. I updated the post. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-01T16:53:26.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3556">Friday, June 1, 2007 4:53:26 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3557">
+
+    
+
+<p class="text">
+Hi Bertrand,  <br>
+ <br>
+I have observed a piculiar thing. I did everything you said like copying
+ the System.Web.Extensions folder found into my js folder and then 
+pointing ScriptPath to that folder as  <br>
+ <br>
+ <br>
+ <br>
+inside the .aspx page EXCEPT doing the patch. <br>
+ <br>
+And I found the error "access is denied" is gone without using the patch! <br>
+ <br>
+However, there appeared two new erros as  <br>
+Line: 116, Error: 'Sys' is undefined <br>
+and <br>
+Line: 211, Error: 'Sys' is undefined <br>
+ <br>
+Fact is if I implement the patch as you said, the situation remains same. <br>
+ <br>
+Please help. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/members/Faisal28.aspx" rel="nofollow">Faisal</a></strong></span>
+        - <span class="when"><time datetime="2007-06-04T07:36:22.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3557">Monday, June 4, 2007 7:36:22 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3558">
+
+    
+
+<p class="text">
+Hello, <br>
+ <br>
+I have sometrouble patching the files. <br>
+ <br>
+i added the external script files downloaded here in the same foldder of
+ my project, i point ScriptPath of the ScriptManager to 
+"~/scripts/System.Web.Extensions/1.0.61025.0/MicrosoftAjax.js", i 
+patched the files as you explained and i get 2 errors of sys is 
+undefined. I restore the original files downloaded and i get the same 
+error. <br>
+In my config the debug is set to false. <br>
+ <br>
+Any ideas? <br>
+ <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>David Miranda</strong></span>
+        - <span class="when"><time datetime="2007-06-04T15:23:17.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3558">Monday, June 4, 2007 3:23:17 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3559">
+
+    
+
+<p class="text">
+never mind i've found my error, thanks it works great. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>David Miranda</strong></span>
+        - <span class="when"><time datetime="2007-06-04T16:23:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3559">Monday, June 4, 2007 4:23:31 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3560">
+
+    
+
+<p class="text">
+Faisal, you're not getting the access denied error because it fails 
+before it even reaches it. The error you're getting is probably caused 
+by a syntax error introduced by your incorrectly patching the file. 
+Please double-check. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-04T17:30:22.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3560">Monday, June 4, 2007 5:30:22 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3561">
+
+    
+
+<p class="text">
+Hi David, <br>
+ <br>
+" <br>
+Hello, I have sometrouble patching the files. i added the external 
+script files downloaded here in the same foldder of my project, i point 
+ScriptPath of the ScriptManager to 
+"~/scripts/System.Web.Extensions/1.0.61025.0/MicrosoftAjax.js", i 
+patched the files as you explained and i get 2 errors of sys is 
+undefined. I restore the original files downloaded and i get the same 
+error. In my config the debug is set to false. Any ideas?  <br>
+" <br>
+i am alos getting same errors. Could you let me know where to fix? <br>
+ <br>
+Thanks. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>SK</strong></span>
+        - <span class="when"><time datetime="2007-06-05T18:23:57.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3561">Tuesday, June 5, 2007 6:23:57 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3563">
+
+    
+
+<p class="text">
+I made it work by copying all ajaxtoolkit control js files to the same 
+path of script files and renaming them "AjaxControlToolkit.Common.xxxx".
+  <br>
+ <br>
+This is not elegant but it worked. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>SK</strong></span>
+        - <span class="when"><time datetime="2007-06-05T19:24:40.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3563">Tuesday, June 5, 2007 7:24:40 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3564">
+
+    
+
+<p class="text">
+hi, thank you for your fix.  <br>
+I still have this problem. I have a datagrid with a template column with
+ a small image within. When the user  hover it a balloon appears 
+(similar to that of google maps) displaying some data.  <br>
+Before your fix there was no way to show it within a iframe. Thanks to 
+your fix now the balloon displays, but it seem that it ignores offset 
+values, do you have any idea? <br>
+ <br>
+Stefano <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>stefano</strong></span>
+        - <span class="when"><time datetime="2007-06-14T12:55:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3564">Thursday, June 14, 2007 12:55:52 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3565">
+
+    
+
+<p class="text">
+No, offset values on what? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-14T17:38:02.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3565">Thursday, June 14, 2007 5:38:02 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3566">
+
+    
+
+<p class="text">
+Sorry, I missed to say the most important thing!! <br>
+The balloon is actually a HoverMenuExtender, I was talkin about OffsetX 
+and OffsetY properties of this extender. After your fix now the extender
+ display, but it's centered above the control it extends and the offset 
+values are ignored. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>stefano</strong></span>
+        - <span class="when"><time datetime="2007-06-16T22:38:35.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3566">Saturday, June 16, 2007 10:38:35 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3567">
+
+    
+
+<p class="text">
+Stefano: you should probably ask this question to the toolkit team. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-18T04:20:35.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3567">Monday, June 18, 2007 4:20:35 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3568">
+
+    
+
+<p class="text">
+I will, but I think this problem is releted with this article, since if I
+ see the page outside the iframe the behavior of the extender is 
+perfect. Sorry if I bother you once again! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>stefano</strong></span>
+        - <span class="when"><time datetime="2007-06-18T07:58:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3568">Monday, June 18, 2007 7:58:52 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3569">
+
+    
+
+<p class="text">
+Stefano: it is related to the iframe, but the patch here only deals with
+ the security issue. It may end up being a problem somewhere in 
+Microsoft Ajax, but you should start by asking the toolkit team as this 
+happens with one of their extenders. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-18T20:06:08.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3569">Monday, June 18, 2007 8:06:08 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3570">
+
+    
+
+<p class="text">
+Thanks for this great info. I wanted to pass along a tip I learned while
+ applying this patch. After applying the patch and trying to run the app
+ I was also getting the 'Sys' and 'Type' undefined errors that I saw 
+other people getting. It took a long time to track down, but what I 
+found was that our Sys Admins had deployed a tool called URLScan onto 
+every desktop to prevent users from going to potentially malicious 
+websites. Well, that tool also has a setting that prevents URLs with 
+periods in their address. We figured this out based on using Fiddler and
+ identifying that we were getting a 404 error when trying to load the 
+patched Ajax files. The URLScan tool was preventing us from loading that
+ file. Anyways, I hope that helps someone out there. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Shane</strong></span>
+        - <span class="when"><time datetime="2007-06-21T14:53:55.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3570">Thursday, June 21, 2007 2:53:55 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3571">
+
+    
+
+<p class="text">
+Shane: urls with periods in the address? That's radical. Most of the web must be filtered out by this? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-22T01:05:46.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3571">Friday, June 22, 2007 1:05:46 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3572">
+
+    
+
+<p class="text">
+Hi <br>
+I was wondering about one thing.  <br>
+I added the scriptpath and this is ok. <br>
+but why do I need to modify the <br>
+MicrosoftAjax.debug.js and MicrosoftAjax.js files? <br>
+Why havent this been fixed in the files from the download location? <br>
+ <br>
+When I did the abouve I still get an error when trying to use ajaxToolkit. Do you have any idea as to why? <br>
+When making these changes do I need to modify any references to the ajaxtoolkit? <br>
+Help is appreciated <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Ajaa</strong></span>
+        - <span class="when"><time datetime="2007-06-27T18:09:10.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3572">Wednesday, June 27, 2007 6:09:10 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3573">
+
+    
+
+<p class="text">
+Ajaa: the files in the download location are the exact same files that 
+are embedded in the dll. We're not servicing one and not the other. 
+That's why we're presenting this as a patch for the people who need it 
+until it is integrated into the main build (which it is in the Orcas 
+betas). See this as a way to get the fix earlier. <br>
+About the toolkit issues, please read UPDATE 2 in the post. You can also
+ contact the toolkit folks through the CodePlex site or the forums. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-06-27T18:30:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3573">Wednesday, June 27, 2007 6:30:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3574">
+
+    
+
+<p class="text">
+I just wanted to mention another problem I had. Although applying the 
+patch worked I got problems when using the ajaxToolkit (latest release).
+ <br>
+I got an error that ajaxToolkit could not be found. <br>
+ <br>
+To solve this I added the ajaxToolkit dll's in same folder as  <br>
+MicrosoftAjax.js and MicrosoftAjax.debug.js <br>
+and renamed them to  <br>
+AjaxControlToolkit.Common.Common.js <br>
+AjaxControlToolkit.Common.DateTime.js <br>
+AjaxControlToolkit.Common.Input.js <br>
+AjaxControlToolkit.Common.Threading.js <br>
+(as you can see I added the prefix 'AjaxControlToolkit.Common.') <br>
+This is mentioned earlier here but I just thought I can repeat it just in case! <br>
+ <br>
+Now everything works for me :) Ive got a updatepanel and the AjaxToolkit Rating control and theire 100% up and running! <br>
+ <br>
+Thanks alot for this patch!  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Arnt Henning</strong></span>
+        - <span class="when"><time datetime="2007-06-28T08:08:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3574">Thursday, June 28, 2007 8:08:31 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3575">
+
+    
+
+<p class="text">
+Why don't you guys just provide us with the modified file? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Madia Thomas</strong></span>
+        - <span class="when"><time datetime="2007-07-03T13:57:14.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3575">Tuesday, July 3, 2007 1:57:14 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3576">
+
+    
+
+<p class="text">
+Madia: because this bug doesn't meet the servicing bar. This is fixed in
+ the Orcas beta release, which has been available for a few months now. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-03T20:47:23.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3576">Tuesday, July 3, 2007 8:47:23 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3577">
+
+    
+
+<p class="text">
+Hi Bertran <br>
+ <br>
+Thanx for the time.. <br>
+ <br>
+I have checked the path in the Source code..The path is correct..But 
+still am getting an error "sys is undefined.." Can u tell me some other 
+reason for that.. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>DEEPAK GUPTA</strong></span>
+        - <span class="when"><time datetime="2007-07-11T13:32:03.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3577">Wednesday, July 11, 2007 1:32:03 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3578">
+
+    
+
+<p class="text">
+Deepak: well, if the path is correct and you've checked that the file 
+actually gets downloaded (for example using Firebug or Fiddler), you 
+probably introduced a syntax error while patching the file. Does it 
+reproduce in debug and release modes? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-11T17:09:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3578">Wednesday, July 11, 2007 5:09:31 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3579">
+
+    
+
+<p class="text">
+Hi Loy <br>
+ <br>
+I am heartly Sorry to you and Heartly Thanx for the time.. <br>
+ <br>
+Atlast i got my stupid mistake..Error is resolved.. <br>
+ <br>
+Actually i have patched the release version file but not debug one.. <br>
+ <br>
+Thats why i always get an error <br>
+ <br>
+Thanx a lot <br>
+ <br>
+Thanx once again <br>
+ <br>
+Bye <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>DEEPAK GUPTA</strong></span>
+        - <span class="when"><time datetime="2007-07-16T05:37:17.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3579">Monday, July 16, 2007 5:37:17 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3580">
+
+    
+
+<p class="text">
+Hi Bertrand Le Roy <br>
+ <br>
+I have check in both modes - Release and Debug Mode..The Error "Sys is undefined" comes in both the mode.. <br>
+ <br>
+Even i have patched my js files 2-3 times but nothing work for me..If you say, Could i send u the patch files by mail... <br>
+ <br>
+One more thing i am using FreeTextBox Control(version 3.16) on the same aspx page..Would it be creaitng any problem.. <br>
+ <br>
+Pls help me..Its really look bad when a popup displays on the Client Screen with the message "Sys is undefined". <br>
+ <br>
+Thanx for the help and time in advance.. <br>
+ <br>
+Bye <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.broadwayinfotech.com.au/" rel="nofollow">DEEPAK GUPTA</a></strong></span>
+        - <span class="when"><time datetime="2007-07-16T10:52:55.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3580">Monday, July 16, 2007 10:52:55 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3581">
+
+    
+
+<p class="text">
+Deepak: did you check in Firebug that the script do actually get loaded? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-16T17:57:03.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3581">Monday, July 16, 2007 5:57:03 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3582">
+
+    
+
+<p class="text">
+I had exactly the same symptoms as Deepak and just fixed it.  If like me
+ you're testing within an iframe then the request to get the script file
+ can be unauthenticated even though you're logged in (because the 
+hosting page's cookies are not accessible to the iframe'ed page).  So if
+ the script files are in a location that requires a logged-in user then 
+you'll be able to download them by manually pasting the URL into the 
+address bar but the iframe'ed page still won't be able to load them.  
+Just need to change web.config appropriately to fix it. <br>
+ <br>
+Having wasted an afternoon on this I just need to let off some steam by 
+saying Microsoft is bonkers beyond belief to leave poor Bertrand helping
+ thousands of developers patching a bug that affects everybody (because 
+every site gets put in an iframe by someone). <br>
+ <br>
+Thank you, I feel better now. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Max C</strong></span>
+        - <span class="when"><time datetime="2007-07-17T06:52:42.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3582">Tuesday, July 17, 2007 6:52:42 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3583">
+
+    
+
+<p class="text">
+Deepak: I'm not asking if the path is ok, but if it effectively loads. 
+You can check that in Firebug by expanding the entry in the net tab. <br>
+Max: the issue doesn't affect many users as you need to use iframes 
+*and* have your iframe be in a different domain. That is not that common
+ and it is a lot less trouble to offer out of band advice than to 
+release a full service patch. The problem is also fixed in all recent 
+releases of Ajax. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-17T18:10:05.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3583">Tuesday, July 17, 2007 6:10:05 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3584">
+
+    
+
+<p class="text">
+If your getting the Sys and Type error. try this: <br>
+ <br>
+Set ScriptMode="auto" and in the compliation tag of web.config remove the debug attribute <br>
+ <br>
+or change  ScriptMode attribute to ScriptMode="Release". <br>
+ <br>
+In debug mode your script tag will alter the path to find a debug js file. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Matt G</strong></span>
+        - <span class="when"><time datetime="2007-07-23T20:02:18.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3584">Monday, July 23, 2007 8:02:18 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3585">
+
+    
+
+<p class="text">
+Matt: if you followed the post's indication, you should have installed 
+all files from the library, which include both the debug and release 
+versions. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-24T05:40:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3585">Tuesday, July 24, 2007 5:40:39 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3586">
+
+    
+
+<p class="text">
+Ziro: you probably included too much in the script path. Apparently in your case it should just be "scripts". <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-25T16:20:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3586">Wednesday, July 25, 2007 4:20:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3587">
+
+    
+
+<p class="text">
+Vladimiro: err, it is a simpler solution, but to a completely different problem so I'm not sure what you mean here... <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-29T23:33:57.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3587">Sunday, July 29, 2007 11:33:57 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3588">
+
+    
+
+<p class="text">
+Alberto, you're right. I've sent mail so that this gets fixed. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-07-31T06:23:46.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3588">Tuesday, July 31, 2007 6:23:46 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3589">
+
+    
+
+<p class="text">
+Has the link been fixed yet? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Gerald</strong></span>
+        - <span class="when"><time datetime="2007-08-03T20:33:08.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3589">Friday, August 3, 2007 8:33:08 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3590">
+
+    
+
+<p class="text">
+Gerald: I've reported the problem. It should have been fixed by now but 
+hasn't for some reason. I've reported it again a few minutes ago and 
+it's being investigated (it doesn't reproduce consistently). Sorry about
+ that and thanks for your patience. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-08-05T06:20:30.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3590">Sunday, August 5, 2007 6:20:30 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3591">
+
+    
+
+<p class="text">
+Thanks Bertrand, seems to work ok. <br>
+ <br>
+So if we update to Orcas or update to the newest version of Ajax when it comes out, should this issue be fixed? Thanks. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Kevin</strong></span>
+        - <span class="when"><time datetime="2007-08-08T13:01:30.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3591">Wednesday, August 8, 2007 1:01:30 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3592">
+
+    
+
+<p class="text">
+Yes. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-08-08T19:11:00.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3592">Wednesday, August 8, 2007 7:11:00 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3593">
+
+    
+
+<p class="text">
+I figured it out. The ScriptReference path is relative, so once I removed the tilde, it worked. Thank you! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Maria Kneipple</strong></span>
+        - <span class="when"><time datetime="2007-08-09T18:50:45.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3593">Thursday, August 9, 2007 6:50:45 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3594">
+
+    
+
+<p class="text">
+Man, your comments are really fast... It changes everytime I'm gonna refresh it.. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>MrVent</strong></span>
+        - <span class="when"><time datetime="2007-08-10T09:13:02.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3594">Friday, August 10, 2007 9:13:02 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3595">
+
+    
+
+<p class="text">
+MrVent: browsers preventing script from accessing other frames that are 
+in different domains is a very fundamental security feature, one of the 
+things web security is built on. You may find some vendor-specific 
+workarounds but there are also better solutions that rely on 
+message-based communication between frames using url fragments. 
+Microsoft Research has produced a technique called subspaces, and 
+there's also some work being done around that in OpenAjax. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-08-11T07:10:18.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3595">Saturday, August 11, 2007 7:10:18 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3596">
+
+    
+
+<p class="text">
+Used this to get a an Ajax enabled page working through a PageViewer web part. It worked like a charm and really saved my hide. <br>
+ <br>
+Thanks. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>John Williams</strong></span>
+        - <span class="when"><time datetime="2007-08-24T23:06:48.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3596">Friday, August 24, 2007 11:06:48 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3597">
+
+    
+
+<p class="text">
+Very good patching! <br>
+ <br>
+App now works smoothly <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.fit2page.nl/" rel="nofollow">Marc</a></strong></span>
+        - <span class="when"><time datetime="2007-08-28T07:46:14.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3597">Tuesday, August 28, 2007 7:46:14 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3598">
+
+    
+
+<p class="text">
+Thanks, It fixed the problem! Hope that MS would release some official 
+patch as well, I assume there are plenty more to be fixed! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Shauheen</strong></span>
+        - <span class="when"><time datetime="2007-08-29T18:49:48.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3598">Wednesday, August 29, 2007 6:49:48 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3599">
+
+    
+
+<p class="text">
+Shauheen: it's already patched in all recent versions of ASP.NET Atlas. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-08-29T21:15:23.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3599">Wednesday, August 29, 2007 9:15:23 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3600">
+
+    
+
+<p class="text">
+Bertrand, <br>
+ <br>
+this is great ! Saved my project ! <br>
+ <br>
+Regarding your last comment, that it's already patched, I'm not sure. <br>
+It still didn't work today :) <br>
+ <br>
+But your patch solved it ! Thanks !!!! <br>
+ <br>
+Arnout Symoens <br>
+ <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://blog.marjanenarnout.be/" rel="nofollow">Arnout Symoens</a></strong></span>
+        - <span class="when"><time datetime="2007-08-30T14:15:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3600">Thursday, August 30, 2007 2:15:52 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3601">
+
+    
+
+<p class="text">
+What I mean by "all recent version", I mean everything that shipped from
+ Orcas Beta 1, but that doesn't include 1.0 even though it can still be 
+downloaded. Version 1.0 remains unpatched and will remain that way. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-08-30T15:07:46.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3601">Thursday, August 30, 2007 3:07:46 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3602">
+
+    
+
+<p class="text">
+Bertrand, <br>
+ <br>
+  Thank you very much. The patch worked like a charm. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Ikeer Savage</strong></span>
+        - <span class="when"><time datetime="2007-08-30T16:52:34.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3602">Thursday, August 30, 2007 4:52:34 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3603">
+
+    
+
+<p class="text">
+I just resolved the 'sys' undefined error by removing ALL line breaks 
+from microsoftajax.js.  The file as downloaded from Microsoft has 2 line
+ breaks in it.  I'll never get those days back.. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>DROCK</strong></span>
+        - <span class="when"><time datetime="2007-09-05T23:30:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3603">Wednesday, September 5, 2007 11:30:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3604">
+
+    
+
+<p class="text">
+What??? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-09-05T23:42:09.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3604">Wednesday, September 5, 2007 11:42:09 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3605">
+
+    
+
+<p class="text">
+Works like a charm - thanks!! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.baladisoftware.net/" rel="nofollow">Michel Baladi</a></strong></span>
+        - <span class="when"><time datetime="2007-09-13T20:29:01.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3605">Thursday, September 13, 2007 8:29:01 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3606">
+
+    
+
+<p class="text">
+im getting sys.undefined only in firefox and not in ie can u help me out with this <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Venk</strong></span>
+        - <span class="when"><time datetime="2007-09-18T06:48:10.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3606">Tuesday, September 18, 2007 6:48:10 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3607">
+
+    
+
+<p class="text">
+Venk: you probably introduced a syntax error while patching the file. Please double-check. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-09-18T18:24:06.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3607">Tuesday, September 18, 2007 6:24:06 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3608">
+
+    
+
+<p class="text">
+I've implemented the Ajax patch and so far so good. But I'm pretty sure 
+that the fix has not been implemented in the AjaxControlToolkit. <br>
+I've just downloaded the 9/20/2007 build and I'm still getting the 
+'Access denied' error when viewing my app within a Sharepoint PageViewer
+ web part. I'm about to grab the source code and do the changes manually
+ and rebuild. <br>
+ <br>
+Can anyone else confirm that the current AjaxControlToolkit still has 
+the issue? I can't find squat about it on the CodePlex Issue Tracker.  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Brian Otten</strong></span>
+        - <span class="when"><time datetime="2007-09-24T07:36:48.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3608">Monday, September 24, 2007 7:36:48 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3609">
+
+    
+
+<p class="text">
+Thanks. This solution helped me a lot. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Ali Khalid</strong></span>
+        - <span class="when"><time datetime="2007-09-26T07:39:00.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3609">Wednesday, September 26, 2007 7:39:00 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3610">
+
+    
+
+<p class="text">
+Thank you - you just saved my day :-)  <br>
+Worked great! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.mailmonitor.dk/" rel="nofollow">Runi Thomsen</a></strong></span>
+        - <span class="when"><time datetime="2007-10-04T13:17:18.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3610">Thursday, October 4, 2007 1:17:18 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3611">
+
+    
+
+<p class="text">
+It works but I get a strange javascript error: Unspecified error. <br>
+Can anyone help me? Thank you! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Giumi</strong></span>
+        - <span class="when"><time datetime="2007-10-12T12:11:37.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3611">Friday, October 12, 2007 12:11:37 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3613">
+
+    
+
+<p class="text">
+John: you should check with a tool such as Firebug, Fiddler or Nikhil's 
+browser helper if the script files are actually downloaded. I'm 
+suspecting that you have a path inconsistency between what you specified
+ in the script reference and the physical location of the file. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-10-18T21:51:35.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3613">Thursday, October 18, 2007 9:51:35 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3614">
+
+    
+
+<p class="text">
+Thanks, Bertrand. <br>
+ <br>
+Fiddler showed that I was receiving a 403 error when trying to pull the 
+MicrosoftAjax.js file from my /bin/System.Web.Extensions/1.0.61025.0 
+directory.  Made perfect sense once I saw it.  The internal web server 
+in Visual Studio 2005 is apparently blocking that folder, but on my test
+ server I can get to the file.  In order to avoid the problem 
+altogether, I moved MicrosoftAjax.js and MicrosoftAjax.debug.js to a new
+ folder in my project named /Scripts and updated my script reference 
+appropriately.  Everything works just fine now, both locally and on the 
+test server. <br>
+ <br>
+Regards, <br>
+John <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>John</strong></span>
+        - <span class="when"><time datetime="2007-10-18T23:59:33.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3614">Thursday, October 18, 2007 11:59:33 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3615">
+
+    
+
+<p class="text">
+I am having the same issue in ASP classic, is there a similar work 
+around I can apply?  Any help would be greatly appreciated, I am pulling
+ my hair out :( <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Ghaj</strong></span>
+        - <span class="when"><time datetime="2007-10-25T23:58:27.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3615">Thursday, October 25, 2007 11:58:27 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3616">
+
+    
+
+<p class="text">
+Ghaj: what do you mean "the same issue"? Do you mean you're getting an 
+access denied error or that you're using MicrosoftAjax with classic ASP?
+ <br>
+If it's just an access denied error that's unrelated to Microsoft Ajax, 
+you probably have some javascript that's trying to get at an object in 
+another frame that's pointed to a different domain. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-10-26T00:06:30.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3616">Friday, October 26, 2007 12:06:30 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3617">
+
+    
+
+<p class="text">
+Thanks Bertrand you are right it is javascript trying to get another 
+object in a different frame, do you know of anything I can do to make it
+ load properly in my frame without giving me the access denied error? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Ghaj</strong></span>
+        - <span class="when"><time datetime="2007-10-26T14:54:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3617">Friday, October 26, 2007 2:54:20 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3618">
+
+    
+
+<p class="text">
+Ghaj: it's an essential security measure that browsers don't allow you 
+to script windows that came from a different domain. Your options are to
+ get those pages to be in the same domain or use a cross-frame 
+communication technique such as Subspace but that's fairly complex and 
+only allows limited, message-based communication. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-10-26T19:27:09.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3618">Friday, October 26, 2007 7:27:09 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3619">
+
+    
+
+<p class="text">
+Thanks a lot man, this solution worked fine on my website. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.borrachos.ducker.com.br/" rel="nofollow">Ricardo Kawano</a></strong></span>
+        - <span class="when"><time datetime="2007-10-28T23:44:01.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3619">Sunday, October 28, 2007 11:44:01 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3620">
+
+    
+
+<p class="text">
+Hi, <br>
+ <br>
+I have applied the fix as specified above, and have gone down the 
+ScriptRefernce route as I am using the toolkit. I am running the latest 
+patched version of the AjaxControlToolkit, and this is fine. I am 
+receiving the following error on page load: <br>
+ <br>
+Sys.ArguementTypeException: Object of type 'Sys._Application' cannot be converted to type 'Sys._Application'. <br>
+Parameter name: instance <br>
+ <br>
+And the is being raised by the following line in MicrosoftAjax.debug.js: <br>
+ <br>
+if (!this.isInstanceOfType(instance)) throw Error.argumentType('instance', Object.getType(instance), this); <br>
+ <br>
+Any ideas as to why this error is being thrown and how I can correct the problem? <br>
+ <br>
+Many Thanx, <br>
+Chris <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Chris Newton</strong></span>
+        - <span class="when"><time datetime="2007-11-15T10:57:32.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3620">Thursday, November 15, 2007 10:57:32 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3621">
+
+    
+
+<p class="text">
+Chris: this typically indicates that a reference to an object in one 
+frame has been passed somehow to the other frame. The system gets 
+confused because the two application types in the two frames are 
+actually different objects. <br>
+I'm suspecting that you're somehow passing complex objects across frames
+ here. If that's the case, try passing plain JavaScript data objects 
+instead (such as {foo: "bar", baz: 42}). <br>
+If this doesn't help, let's take that offline and send me mail through the contact form of the blog. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-11-15T17:24:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3621">Thursday, November 15, 2007 5:24:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3622">
+
+    
+
+<p class="text">
+Thanks for your informative article.  <br>
+ <br>
+Just wondering if VS 2008 / 3.5 obviates the need for this patch? You 
+mentioned: "I expect this is the fix that will be in the next service 
+release" Has this happened yet?  <br>
+ <br>
+Thanks <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Crile Carvey</strong></span>
+        - <span class="when"><time datetime="2007-11-19T16:07:40.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3622">Monday, November 19, 2007 4:07:40 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3623">
+
+    
+
+<p class="text">
+Crile: yes, the fix is in 3.5 already. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-11-19T19:23:38.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3623">Monday, November 19, 2007 7:23:38 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3624">
+
+    
+
+<p class="text">
+Why the hell you don't make things work properly the first way? I spent 1
+ whole day just to find the problem. I was stupid to have used your 
+library the first place. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Umer Farooq Butt</strong></span>
+        - <span class="when"><time datetime="2007-11-30T16:32:15.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3624">Friday, November 30, 2007 4:32:15 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3625">
+
+    
+
+<p class="text">
+Umer: now it works properly out of the box as the fix is in .NET 3.5. 
+This was a bug that was found after the product shipped. These things 
+happen, unfortunately. We thought it was better to provide a workaround 
+than nothing. I'm sorry you had to spend a day on that. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-11-30T17:57:33.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3625">Friday, November 30, 2007 5:57:33 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3626">
+
+    
+
+<p class="text">
+I spent 10 seconds on Google and found this article. Thanks for the heads up. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.skowronek.org/" rel="nofollow">Skowronek</a></strong></span>
+        - <span class="when"><time datetime="2007-12-01T15:33:02.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3626">Saturday, December 1, 2007 3:33:02 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3627">
+
+    
+
+<p class="text">
+Hi, I'm trying to load into IFrame application that uses ASP.NET Ajax 
+and have the issue described in this post. But I can't fix it thru the 
+proposed solution because I can't access applications ScriptManager. 
+Application is compiled and I've no access to the source code. <br>
+Is there any other approach to replace JavaScript files than accessing 
+ScriptManger to fix this issue? (maybe thru pathching 
+ScriptReference.axd handler) <br>
+Thanks in advance! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Andrew Vasylevskyy</strong></span>
+        - <span class="when"><time datetime="2007-12-06T14:27:47.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3627">Thursday, December 6, 2007 2:27:47 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3628">
+
+    
+
+<p class="text">
+Andrew: I think your only other options are: <br>
+1. to ask your hoster to upgrade to .NET 3.5 <br>
+2. to replace the whole function that we're patching here. You'd do that
+ by including an additional file that contains a redefinition of the 
+function that will overwrite the one in the resource. <br>
+Makes sense? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-12-06T17:48:53.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3628">Thursday, December 6, 2007 5:48:53 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3629">
+
+    
+
+<p class="text">
+Thanks Bertrand! <br>
+ <br>
+The 2nd option works fine for me. I've got access to the master pages, 
+so I've just included script block with overriding whole funtion into 
+the master page. And it works fine now. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Andrew Vasylevskyy</strong></span>
+        - <span class="when"><time datetime="2007-12-07T10:33:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3629">Friday, December 7, 2007 10:33:20 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3630">
+
+    
+
+<p class="text">
+I had applied the this fix months ago on a Framework 2 site with the 
+ASP.Net Ajax 1.0.  Now, when the site was upgraded to 3.5 and my script 
+manager was pointing to manual copies of the scripts I got the error 
+"ASP.NET Ajax client-side framework failed to load"... I've had to 
+remove the script manager pointing to those scripts and am in the 
+process now of testing to make sure this bug is fixed with IFrames with 
+3.5 like some here have posted, I'm crossing my fingers it is!  :) <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>John</strong></span>
+        - <span class="when"><time datetime="2007-12-13T22:09:19.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3630">Thursday, December 13, 2007 10:09:19 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3631">
+
+    
+
+<p class="text">
+hi, <br>
+I have applied this fix to my web application. how ever I still got 
+'Sys' is undefined, 'Type' is undefined Errors. I have two questions, <br>
+ <br>
+1. how do i compile the MicrosoftAjax.js, what whould i do? <br>
+ <br>
+2. does the main web application need to add this fix as well? the main 
+web application is Net 1.1 and the web application inside the frame is 
+Net 2.0. does that cuz the problem? <br>
+ <br>
+thank you.  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>c10se</strong></span>
+        - <span class="when"><time datetime="2007-12-27T05:39:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3631">Thursday, December 27, 2007 5:39:31 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3632">
+
+    
+
+<p class="text">
+1. You don't have to compile it. Just follow the instructions very 
+carefully and you'll be fine. Also look at the answers I already made to
+ other people with the same difficulties, there are a few possible 
+causes for that. <br>
+2. No. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2007-12-28T04:10:59.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3632">Friday, December 28, 2007 4:10:59 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3633">
+
+    
+
+<p class="text">
+Congratulations! <br>
+It works very well at first attempt. <br>
+ <br>
+Thanks a lot! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Fabio Pavani</strong></span>
+        - <span class="when"><time datetime="2008-01-17T15:17:42.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3633">Thursday, January 17, 2008 3:17:42 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3634">
+
+    
+
+<p class="text">
+Pablo, your last post was golden. This worked in my .net 2.0 master 
+page. I'm so glad I finally fixed this. Thank you for posting the 
+condensed javascript.  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>ButterCatZ</strong></span>
+        - <span class="when"><time datetime="2008-02-13T18:21:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3634">Wednesday, February 13, 2008 6:21:52 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3635">
+
+    
+
+<p class="text">
+Pablo, your fix works like a champ! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>MuffinBottom</strong></span>
+        - <span class="when"><time datetime="2008-02-27T14:51:09.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3635">Wednesday, February 27, 2008 2:51:09 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3636">
+
+    
+
+<p class="text">
+Yeah Pablo, thanks. I work for a major corp and we had a big rollout this morning when we saw that error. Thanks, it worked. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Paul Mc</strong></span>
+        - <span class="when"><time datetime="2008-02-27T14:55:08.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3636">Wednesday, February 27, 2008 2:55:08 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3637">
+
+    
+
+<p class="text">
+Yes, DO NOT use Pablo's fix. It is overwriting the implementation of the
+ method for all browsers with the one that's specific to IE. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-02-27T17:45:24.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3637">Wednesday, February 27, 2008 5:45:24 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3638">
+
+    
+
+<p class="text">
+Bertrand -- just a quick note to point our that your comment below is wrong: <br>
+ <br>
+"Max: the issue doesn't affect many users as you need to use iframes 
+*and* have your iframe be in a different domain. That is not that common
+ ..." <br>
+ <br>
+Every public site gets put in an iframe by someone, sometime.  The 
+developer has no control over this and definitely does not need to be 
+using iframes themselves to be affected, as you claim.  I don't use 
+iframes myself and am still dealing with the fallout from this over a 
+year later. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Max C</strong></span>
+        - <span class="when"><time datetime="2008-03-06T06:54:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3638">Thursday, March 6, 2008 6:54:52 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3639">
+
+    
+
+<p class="text">
+@Max: I'm sorry this affected you but that doesn't mean it affects 
+everyone as you claim. Indeed, support does not seem to be getting that 
+many incidents around that issue. Anyway, this is fixed in the current 
+version of .NET (3.5). <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-03-06T17:40:02.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3639">Thursday, March 6, 2008 5:40:02 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3640">
+
+    
+
+<p class="text">
+Bertrand -- if you don't agree you might be respectful enough to explain
+ where the hole in my logic is.  If you think for a moment, perhaps 
+you'll realise it absolutely does mean that everyone was affected. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Max C</strong></span>
+        - <span class="when"><time datetime="2008-03-10T09:09:58.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3640">Monday, March 10, 2008 9:09:58 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3641">
+
+    
+
+<p class="text">
+@Max: I'm sorry if you felt that I've been disrespectful, that wasn't my
+ intention. I think there's a differnece between disagreeing and being 
+disrespectful. <br>
+I agree that *potentially*, everyone is affected, but in reality, this 
+issue is relatively rare, as is attested by the number of support calls.
+ I disagree that "every public site gets put in an iFrame by someone, 
+sometime" and anywaythe person setting up the iframe should probably be 
+the one making sure it works. Furthermore, the problem is fixed in the 
+current version of the framework. If you would like a QFE for previous 
+versions, please contact support but I think it unlikely to happen as 
+there is a reasonable workaround. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-03-10T16:46:05.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3641">Monday, March 10, 2008 4:46:05 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3642">
+
+    
+
+<p class="text">
+Wow, thanks a lot it really works!  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Benedict Sauri II</strong></span>
+        - <span class="when"><time datetime="2008-03-11T04:08:15.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3642">Tuesday, March 11, 2008 4:08:15 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3643">
+
+    
+
+<p class="text">
+Could it be that this doesn't work in IE8 beta? Thanks! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>rudgr</strong></span>
+        - <span class="when"><time datetime="2008-03-27T15:12:05.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3643">Thursday, March 27, 2008 3:12:05 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3644">
+
+    
+
+<p class="text">
+@rudgr: can you be a little more specific? What problem are you experiencing? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-03-27T17:14:51.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3644">Thursday, March 27, 2008 5:14:51 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3645">
+
+    
+
+<p class="text">
+Has this been fixed with 3.5? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Jon</strong></span>
+        - <span class="when"><time datetime="2008-04-01T19:24:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3645">Tuesday, April 1, 2008 7:24:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3646">
+
+    
+
+<p class="text">
+Yes. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-04-01T19:38:23.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3646">Tuesday, April 1, 2008 7:38:23 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3647">
+
+    
+
+<p class="text">
+Excellent Article,  <br>
+Note:The Path should be relative  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Karthik</strong></span>
+        - <span class="when"><time datetime="2008-05-26T06:40:51.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3647">Monday, May 26, 2008 6:40:51 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3648">
+
+    
+
+<p class="text">
+Hi,  <br>
+ <br>
+I have the following errors in release mode :  <br>
+ <br>
+var $create=Sys.Component.create=function(h,f,d,c,g){var a=g?new h(g):new h, <br>
+ <br>
+ <br>
+It appends when I have a timer in my page... as Thomas problem!!  <br>
+ <br>
+I've checked my script and I think it's ok . <br>
+ <br>
+What's wrong please ? <br>
+ <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Hiruma</strong></span>
+        - <span class="when"><time datetime="2008-05-26T07:51:34.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3648">Monday, May 26, 2008 7:51:34 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3649">
+
+    
+
+<p class="text">
+I'm facing the exact same problem as Hiruma... <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Diego Frata</strong></span>
+        - <span class="when"><time datetime="2008-05-28T02:58:13.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3649">Wednesday, May 28, 2008 2:58:13 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3650">
+
+    
+
+<p class="text">
+@Hiruma: Thomas had incorrectly patched his file if I remember correctly. Please double-check. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-05-28T23:59:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3650">Wednesday, May 28, 2008 11:59:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3651">
+
+    
+
+<p class="text">
+I have checked my patch and there's no difference in the  javascript 
+file but I use the ScriptPath property of the Script manager. <br>
+ <br>
+In the page source code, the correct MicrosoftAjax.js file is called. I don't understand ... <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Hiruma</strong></span>
+        - <span class="when"><time datetime="2008-06-03T14:58:28.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3651">Tuesday, June 3, 2008 2:58:28 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3652">
+
+    
+
+<p class="text">
+Give me the url of your page and I'll take a look. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-06-03T15:05:01.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3652">Tuesday, June 3, 2008 3:05:01 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3653">
+
+    
+
+<p class="text">
+If I replace my ScriptPath by the ScriptReference it works !  <br>
+ <br>
+so the files downloaded are corrupted ? <br>
+ <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Hiruma</strong></span>
+        - <span class="when"><time datetime="2008-06-04T08:56:34.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3653">Wednesday, June 4, 2008 8:56:34 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3654">
+
+    
+
+<p class="text">
+It works like a charm...Dude your a genious.  Thanks alot. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Certified Professional</strong></span>
+        - <span class="when"><time datetime="2008-06-06T17:02:04.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3654">Friday, June 6, 2008 5:02:04 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3655">
+
+    
+
+<p class="text">
+Hello Bertrand, <br>
+ <br>
+It would be a great help if you can comment on my issues. <br>
+ <br>
+Thank you in advance <br>
+Ashish <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>ubgadeashish</strong></span>
+        - <span class="when"><time datetime="2008-06-19T09:36:32.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3655">Thursday, June 19, 2008 9:36:32 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3656">
+
+    
+
+<p class="text">
+Thanks for this article - I read and followed the exact sequence for 
+patching the files for debug and release but I still continue to get 
+"Access Denied" errors when attempting to open another web page in an 
+iframe.  I see in "View Source" that my file is being referenced from 
+the correct location - Is there anything else that could cause this 
+error??  I get the error on both debug and release versions of the 
+MicrosoftAjax.js file.  Please let me know what you think about this 
+issue - Thanks for your help!! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Robert</strong></span>
+        - <span class="when"><time datetime="2008-06-19T12:18:40.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3656">Thursday, June 19, 2008 12:18:40 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3657">
+
+    
+
+<p class="text">
+@ubgadeashish: The problem is that I didn't understand your comment, 
+which seems to be unrelated to the problem described in this post. 
+Please contact me through the contact form with a simple repro of the 
+problem. <br>
+ <br>
+@Robert: Yes, this error is perfectly normal if you're trying to access 
+the DOM in another frame that is in a different domain. That is a 
+security restriction that is imposed by your browser. <br>
+The problem that this post solves was the appearance of this error in pages that didn't explicitly try to access another frame. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-06-19T16:38:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3657">Thursday, June 19, 2008 4:38:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3658">
+
+    
+
+<p class="text">
+@Oleg: check the path in the renedered HTML against the real location of the script and adjust your Path attribute accordingly. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-07-05T21:03:34.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3658">Saturday, July 5, 2008 9:03:34 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3659">
+
+    
+
+<p class="text">
+Thanks Bertrand, I forgot that the fix was only for IE. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://pablo.poo.cl/" rel="nofollow">Pablo</a></strong></span>
+        - <span class="when"><time datetime="2008-07-10T23:13:11.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3659">Thursday, July 10, 2008 11:13:11 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3660">
+
+    
+
+<p class="text">
+Actually the above solution is working for Firefox not in IE.Please advice us. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Cathrine</strong></span>
+        - <span class="when"><time datetime="2008-08-12T10:03:01.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3660">Tuesday, August 12, 2008 10:03:01 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3661">
+
+    
+
+<p class="text">
+@Cathrine: it was never broken on Firefox. Chances are you improperly patched the files. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-08-12T18:44:11.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3661">Tuesday, August 12, 2008 6:44:11 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3663">
+
+    
+
+<p class="text">
+Hi Bertrand, Thanks for the nice post. I modified Release and Debug JS 
+as mentioned, and i was able to see it the script working in Frame. <br>
+ <br>
+Only issue i have is i get right and bottom a scroll bar in 
+AutoCompleteExtender of AJAX Toolkit, which is hiding the one row of 
+data which is last row.  <br>
+ <br>
+I don't get the scroll bar if i run the application without frame and original files. <br>
+ <br>
+Any idea what could be causing the scrollbar to be displayed. I am using IE6 <br>
+Thanks <br>
+Amit <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Amit</strong></span>
+        - <span class="when"><time datetime="2008-10-24T18:41:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3663">Friday, October 24, 2008 6:41:20 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3664">
+
+    
+
+<p class="text">
+@Amit: We can take that offline (bleroy at Microsoft) but the first 
+thing I'd check is that you have a doctype for standard mode. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-10-24T18:48:08.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3664">Friday, October 24, 2008 6:48:08 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3665">
+
+    
+
+<p class="text">
+Hi Bertrand, thanks for the info! <br>
+ <br>
+After applying the patch I was also getting the 'Sys' and 'Type' undefined errors, but only on one particular WebServer.  <br>
+ <br>
+Our problem was the same that Shane was experiencing: the server had the
+ URLScan tool installed, and it was preventing Requests containing 
+periods (in our case, the patched Ajax files). <br>
+ <br>
+If someone else is having this problem, you can configure the URLScan 
+tool to allow Requests with periods (by default they are denied) by 
+setting the AllowDotInPath=1 in the 
+%windir%\system32\inetsrv\urlscan\UrlScan.ini file. <br>
+ <br>
+I hope this helps someone else! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Paulo Soto</strong></span>
+        - <span class="when"><time datetime="2008-10-30T17:02:13.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3665">Thursday, October 30, 2008 5:02:13 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3666">
+
+    
+
+<p class="text">
+Our problem is similar, since we do get the access denied error, however
+ all of the aspx scripts are pregenerated by Sybase Powerbuilder and, 
+because of that, we don't have direct access to it. We're using an 
+iframe on the html page that is linked to the aspx site on IIS. Any 
+sugestions how to work this around? Any way to fix this without 
+acquiring Visual Studio? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Bruno</strong></span>
+        - <span class="when"><time datetime="2008-11-10T16:24:21.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3666">Monday, November 10, 2008 4:24:21 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3667">
+
+    
+
+<p class="text">
+@Bruno: you should contact Sybase's support (Visual Studio shouldn't have anything to do with it). <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-11-10T17:33:01.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3667">Monday, November 10, 2008 5:33:01 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3668">
+
+    
+
+<p class="text">
+@Bruno: please read the section of the post under the title "how to 
+apply the fix". If Sysbase's application doesn't let you do that, only 
+them can fix it. The only solution I would see would be to 
+"monkey-patch" the method by adding another script file to the page that
+ contains a fixed override for the method. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-11-13T18:20:12.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3668">Thursday, November 13, 2008 6:20:12 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3669">
+
+    
+
+<p class="text">
+Hi Bertrand, <br>
+ <br>
+I'm sorry if this would seem to be a very newbie question, but I didn't 
+get the first step on how to fix the problem (script manager, script 
+path step) Could you please help? <br>
+ <br>
+Thanks alot. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>KCC</strong></span>
+        - <span class="when"><time datetime="2008-12-16T13:30:36.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3669">Tuesday, December 16, 2008 1:30:36 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3670">
+
+    
+
+<p class="text">
+@KCC: Just create an explicit script reference for MicrosoftAjax.js as 
+described in the following paragraph. But your best bet right now is to 
+migrate to a more recent version of the framework, where this bug is 
+fixed. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-12-16T17:18:57.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3670">Tuesday, December 16, 2008 5:18:57 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3671">
+
+    
+
+<p class="text">
+Hi Roy, <br>
+ <br>
+I was able to complete the steps you mentioned here, but unfortunately, 
+the "Permission Denied" error still remains. I didn't even get the 'sys 
+is undefined' error. I have checked (using Fiddler) that 
+MicrosoftAjax.js has been properly loaded into the masterpage. I have 
+also patched the files as mentioned. <br>
+ <br>
+Unfortunately, I can't use the recent version of the framework. <br>
+ <br>
+Thanks in advanced. <br>
+ <br>
+Any help would be appreciated. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>KCC</strong></span>
+        - <span class="when"><time datetime="2008-12-17T12:02:23.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3671">Wednesday, December 17, 2008 12:02:23 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3672">
+
+    
+
+<p class="text">
+I have the same problem. I applied the patch and it worked fine. I 
+installed it on our DEV Server and it was working fine. One day the DEV 
+Server hardware was replaced (They claim to have not changed any thing 
+else. ) <br>
+Now all of sudden, the application is showing Access Denied error. My 
+frames are using an asp page and an aspx page (.net 2.0) .  <br>
+Thanks <br>
+Samir <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Samir Shah</strong></span>
+        - <span class="when"><time datetime="2008-12-17T21:31:37.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3672">Wednesday, December 17, 2008 9:31:37 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3673">
+
+    
+
+<p class="text">
+@KCC &amp; @Samir: please contact me at bleroy at microsoft and I'll try to help. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2008-12-17T21:36:27.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3673">Wednesday, December 17, 2008 9:36:27 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3674">
+
+    
+
+<p class="text">
+This worked brilliantly in conjuntion with the toolkit fix. <br>
+ <br>
+Make sure your script path is just the top level ie. "~/scripts" and not "~/scripts/system.web.extensions/v1..........." <br>
+ <br>
+Hope this helps someone! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Mark</strong></span>
+        - <span class="when"><time datetime="2009-01-05T11:49:31.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3674">Monday, January 5, 2009 11:49:31 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3675">
+
+    
+
+<p class="text">
+I was able to fix the problem "Access is denied" and just wanted to 
+share with everyone. I lowered the security settings in my IE (Tools 
+&gt; Options &gt; Security). Select Meidum-low or anything lower than 
+that and it would accept the scripts. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>KCC</strong></span>
+        - <span class="when"><time datetime="2009-01-13T05:32:46.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3675">Tuesday, January 13, 2009 5:32:46 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3676">
+
+    
+
+<p class="text">
+I would not recommend anyone follow KCC's advice. First, you can't and 
+shouldn't ask all your customers to lower the level of security of their
+ browsers. Second, you're fixing the symptom rather than the actual 
+problem. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2009-01-13T05:44:22.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3676">Tuesday, January 13, 2009 5:44:22 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3677">
+
+    
+
+<p class="text">
+Having read this excellent article and all the comments, I followed the 
+all the steps. I still got the error when trying to instantiate an AJAX 
+calendar popup. <br>
+ <br>
+My solution was to upgrade the site from VS2005 (ASP.Net 2.0) to VS2008 (ASP.Net 3.5). Works fine now! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Jules H</strong></span>
+        - <span class="when"><time datetime="2009-01-16T15:12:38.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3677">Friday, January 16, 2009 3:12:38 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3678">
+
+    
+
+<p class="text">
+Really worthful article. <br>
+It's really worked for me. <br>
+I am very much tahnkful to u as it saved my job. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Vallamreddy Venugopal</strong></span>
+        - <span class="when"><time datetime="2009-03-18T06:09:03.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3678">Wednesday, March 18, 2009 6:09:03 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3679">
+
+    
+
+<p class="text">
+This fix worked like a dream first time after a morning of panic after seeing my eCommerce site going fubar in an iFrame. <br>
+ <br>
+Thanks a million. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Andy P</strong></span>
+        - <span class="when"><time datetime="2009-04-24T13:33:15.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3679">Friday, April 24, 2009 1:33:15 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3680">
+
+    
+
+<p class="text">
+I encountered this error today. My dev system worked fine without any 
+fixes (regular Internet security, not Trusted site level). Our beta test
+ server had the Access Denied problem. I've applied this fix and 
+resolved a new (but temporary) Sys Is Undefined error. Now I am getting 
+Permission Denied. <br>
+ <br>
+I have an ASP page on web site #1 with a button control. I have an ASPX 
+AJAX page on web site #2 with a hidden LinkButton control that is within
+ an IFrame on the ASP page. When the ASP button control is clicked, it 
+attempts to click the LinkButton. No error on the dev system, but this 
+results in a Permission Denied on the beta system. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Joe</strong></span>
+        - <span class="when"><time datetime="2009-04-28T13:47:22.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3680">Tuesday, April 28, 2009 1:47:22 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3681">
+
+    
+
+<p class="text">
+@Joe: could be several things. You might have patched only the debug 
+version and not the release one (that would explain that it works on the
+ dev box and not the server), you might have omitted to copy your 
+patched files over, the error might come from your own code, something I
+ haven't thought of or a combination of the above. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2009-04-28T17:44:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3681">Tuesday, April 28, 2009 5:44:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3682">
+
+    
+
+<p class="text">
+@Augusto: did you deploy the patched MicrosoftAjax.js file to the dev 
+server? Did you check the script was getting downloaded using Firebug or
+ Fiddler? Did you check you were getting no syntax errors? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2009-04-29T23:19:39.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3682">Wednesday, April 29, 2009 11:19:39 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3683">
+
+    
+
+<p class="text">
+@jgdean: having static script references is the way to go. The script 
+profiler that is available on CodePlex/aspnet can help you determine the
+ set of scripts you need for any given page. <br>
+I'd also encourage you to upgrade to 3.5 SP1 if you can. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2009-05-06T17:42:05.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3683">Wednesday, May 6, 2009 5:42:05 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3684">
+
+    
+
+<p class="text">
+Bertrand Le Roy THANKS!!!!! <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Vlad</strong></span>
+        - <span class="when"><time datetime="2009-05-19T12:56:57.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3684">Tuesday, May 19, 2009 12:56:57 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3685">
+
+    
+
+<p class="text">
+can u take off access denied on this computer? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://hi/" rel="nofollow">Hunter</a></strong></span>
+        - <span class="when"><time datetime="2009-06-04T15:06:04.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3685">Thursday, June 4, 2009 3:06:04 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3686">
+
+    
+
+<p class="text">
+Thanks for this post. Together with Delay's Blog (which pointed me to 
+yours) and Damian Mehers' (which pointed me to the location of the 
+MicrosoftAjax.js) I managed to get our .Net 2.0 ASP.Net with the Ajax 
+Toolkit working properly in an iFrame on our company's site. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://www.makoho.nl/" rel="nofollow">marco hokke</a></strong></span>
+        - <span class="when"><time datetime="2009-07-27T14:56:38.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3686">Monday, July 27, 2009 2:56:38 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3687">
+
+    
+
+<p class="text">
+Good fix Bertrand.  <br>
+ <br>
+This fixed it for me with ASP.NET 2.0 app in Sharepoint 2007 Web Page 
+Viewer Web Part. So for anyone reading this - unless you are using an 
+ASP.NET 3.5+ web app of course in web part do exactly what he says and 
+save yourself a lot of hastle.    <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>John</strong></span>
+        - <span class="when"><time datetime="2009-12-18T14:24:09.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3687">Friday, December 18, 2009 2:24:09 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3688">
+
+    
+
+<p class="text">
+Hi, <br>
+    am getting status 404 tomcat server error,when i followed what you have mentioned.Could anyone explain Why??? <br>
+ <br>
+Regards, <br>
+Priya <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Priya</strong></span>
+        - <span class="when"><time datetime="2010-04-12T06:14:41.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3688">Monday, April 12, 2010 6:14:41 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3689">
+
+    
+
+<p class="text">
+@Priya: well, if Tomcat is giving you an error, that means that you're 
+using Java and thus you're completely off-topic here. You'll have a much
+ better chance of seeing your problem solved if you asked your question 
+on a Tomcat/Java forum and if you explained exactly what server error 
+you're seeing and what you did that triggered that error. By the way, 
+404 means resource not found, so chances are you used a URL that doesn't
+ exist. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2010-04-12T19:06:32.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3689">Monday, April 12, 2010 7:06:32 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3690">
+
+    
+
+<p class="text">
+@Mike: very likely, you introduced a syntax error while patching the files. <br>
+Please consider upgrading to .NET 3.5SP1 or 4.0. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2010-05-04T17:43:02.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3690">Tuesday, May 4, 2010 5:43:02 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3691">
+
+    
+
+<p class="text">
+Query about sidestepping the whole problem by simply not using 
+cross-domain frames: Will it resolve the problem if the framed site 
+using Ajax uses a subdomain alias of the host page domain? E.g., if I 
+use Ajax on a page hosted at sub.mydomain.com, and I display that site 
+in an iframe on a page at www.mydomain.com, will this avoid the issue?  <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>SDG</strong></span>
+        - <span class="when"><time datetime="2010-11-15T14:53:55.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3691">Monday, November 15, 2010 2:53:55 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3692">
+
+    
+
+<p class="text">
+@SDG: seriously, just upgrade ASP.NET already, this has been fixed for the last two versions. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2010-11-15T18:54:11.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3692">Monday, November 15, 2010 6:54:11 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3693">
+
+    
+
+<p class="text">
+First of all, thanks for this awesome fix, I added this to my 2.0 
+application when the client wanted to call the page from an IFrame. It 
+got fixed and worked well in IE, but now not working in Chrome. When I 
+checked the .js, IE and CHrome shares same switch as I didnt changed any
+ other. IS there any fix for this in CHrome, without changing the 
+framework? <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>Binu Jo</strong></span>
+        - <span class="when"><time datetime="2012-02-21T11:46:52.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3693">Tuesday, February 21, 2012 11:46:52 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3694">
+
+    
+
+<p class="text">
+@Binu Jo: It's probably time to move on to a recent version of ASP.NET. This was fixed about a century ago :) <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2012-02-22T01:38:05.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3694">Wednesday, February 22, 2012 1:38:05 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="">
+
+
+<blockquote class="comment comment-3695">
+
+    
+
+<p class="text">
+ am getting javascript error when i try to do some operations on the https pages like button clicks. The error is below <br>
+ <br>
+  <br>
+ <br>
+Webpage error details <br>
+ <br>
+User Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; 
+Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 
+3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.2; BRI/2) <br>
+Timestamp: Sat, 26 May 2012 04:28:12 UTC <br>
+ <br>
+ <br>
+Message: Access is denied. <br>
+ <br>
+Line: 6930 <br>
+Char: 9 <br>
+Code: 0 <br>
+URI: 
+http://localhost:51516/ScriptResource.axd?d=h_o86yu-K-6nTNA3HhMgZoSImLI-VZzHJp_zcYCqJKeY5fNfe2-pvJdiEviO7YYwdftPGkhPoEWeYhxg3VguzhSFtolRzruKiiGyuHbjt9skWfwZ8jL6v7dbwa5lxsUjQnMK7v7NyOOJpTG1dEwC62FYhPByOFqtZ3DqnQeTNoGBkiy5MycdjDpVux7e_GsN0&amp;t=ffffffffbd2983fc
+ <br>
+ <br>
+  <br>
+. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong>shirishmanda</strong></span>
+        - <span class="when"><time datetime="2012-05-26T05:13:53.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3695">Saturday, May 26, 2012 5:13:53 AM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+<li class="last ">
+
+
+<blockquote class="comment comment-3696">
+
+    
+
+<p class="text">
+@shirishmanda: just upgrade. If that doesn't work, contact support. <br>
+
+</p>
+
+
+    <footer>
+        <span class="who"><strong><a href="http://weblogs.asp.net/bleroy/" rel="nofollow">Bertrand Le Roy</a></strong></span>
+        - <span class="when"><time datetime="2012-06-12T19:49:20.0000000Z"><a class="alert-link" href="https://weblogs.asp.net/bleroy/how-to-work-around-the-quot-access-denied-quot-cross-domain-frame-issue-in-asp-net-ajax-1-0#comment-3696">Tuesday, June 12, 2012 7:49:20 PM</a></time></span>
+    </footer>
+
+    
+</blockquote>
+
+
+</li>
+</ul>
+
+
+
+
+
+
+
+    <div id="comments">
+        <p class="comment-disabled alert alert-warning">Comments have been disabled for this content.</p>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="layout-footer" class="group">
+    <footer id="footer">
+        <div id="footer-quad" class="group">
+                                            </div>
+        <div id="footer-sig" class="group">
+            <div class="zone zone-footer">
+<article class="widget-AdCode widget-footer widget-html-widget widget">
+    
+<p>
+<script type="text/javascript">// <![CDATA[
+function _dmBootstrap(file) {
+    var _dma = document.createElement('script');
+    _dma.type = 'text/javascript';
+    _dma.async = true;
+    _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+}
+function _dmFollowup(file) { if (typeof DMAds === 'undefined') _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js'); }
+(function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000); })();
+// ]]></script>
+</p>
+</article>    <div class="credits text-muted"><span class="terms"><a href="http://www.asp.net/terms-of-use">Terms Of Use</a></span> - <span class="poweredby">Powered by <a href="http://www.orchardproject.net/" target="_blank">Orchard</a></span></div>
+</div>
+        </div>
+    </footer>
+</div>
+</div>
+
+    <script src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/jquery-1.js" type="text/javascript"></script>
+<script src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/bootstrap.js" type="text/javascript"></script>
+
+    <script>
+		(function (i, s, o, g, r, a, m)
+		{
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function ()
+			{
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-61337531-1', 'auto');
+		ga('send', 'pageview');
+    </script>
+    <script src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/broker.js"></script>
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-5109912-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+$(function() {
+    $(".share").each(function() {
+        var link = $(this),
+            urlToken = link.hasClass("share-facebook") ? "&u=" : "&url=";
+        link.attr("href", link.attr("href") + "?via=bleroy&text=" + encodeURIComponent(document.title) + urlToken + encodeURIComponent(document.URL));
+    }).click(function (e) {
+        var popup = window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+        if (popup) {
+            popup.focus();
+            e.preventDefault();
+            e.returnValue = false;
+        }
+        return !!popup;
+    });
+});
+</script>
+
+<script src="Datoteke_za_Tales%20from%20the%20Evil%20Empire%20-%20How%20to%20work%20around%20the%20access%20denied%20cross-domain%20frame%20issue%20in%20ASP.NET%20Ajax%201.0/broker-config.js"></script></body></html>

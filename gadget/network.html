@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Network</title>
+	<meta name="author" content="Kirk Ouimet" />
+	<meta name="author-url" content="https://github.com/veso266/Network.gadget" />
+
+	<script type="text/javascript" src="MicrosoftAjax.debug.js"></script>
+	<script type="text/javascript" src="proxy.js"></script>
+
+	<script type="text/javascript" language="javascript">
+        // Initialize the gadget
+		function getExternalIpAddress() {
+			window.blur();
+			$get('response').innerHTML = "<p style=\"margin: 24px auto 0 auto; padding: 0; text-align: center;\">Acquiring address...</p>";
+			var networkService = new NetworkService();
+			networkService.set_defaultSucceededCallback(SucceededCallback);
+			networkService.set_defaultFailedCallback(FailedCallback);
+			networkService.showInfo("2");
+		}
+		function SucceededCallback(result) {
+			$get('response').innerHTML = result;
+		}
+		function FailedCallback(error) {
+			$get('response').innerHTML = "<p style=\"margin: 18px auto 0 auto; padding: 0; text-align: center;\">No connection.</p><p style=\"cursor: pointer; padding: 0; margin: 0; text-align: center;\" onclick=\"tryAgain(); return false;\">- Refresh -</p>";				
+		}
+		function tryAgain() {
+			$get('response').innerHTML = "<p style=\"margin: 24px auto 0 auto; padding: 0; text-align: center;\">Acquiring address...</p>";
+			setTimeout(getExternalIpAddress, 1000);			
+		}
+		window.setInterval(tryAgain, 600000);		
+    </script>
+   
+	<style>
+		 body {
+			position: absolute;
+			padding: 0;
+			margin: 0;
+			height: 65px;
+			width: 127px;
+			font-family: Segoe UI;
+			font-size: 12px;
+			color: white;
+			background: url('background.png') top left no-repeat;
+		}
+		a {
+			text-decoration: none;
+			color: #FFF;
+			padding-right: 3px;
+		}
+		p {
+			width: 127px;
+			text-align: right;
+			color: #FFF;
+			font-family: Segoe UI;
+			font-size: 11px;
+			margin: 0;
+			padding: 0 7px 0 0;
+		}
+		input {
+			width: 127px;
+			text-align: right;
+			margin: 10px 0 0 0;
+			padding: 0 6px 0 0;
+			background: none;
+			color: white;
+			font-family: Segoe UI;
+			font-size: 15px;
+			font-weight: normal;
+			border: none;
+		}
+		#response {
+		
+		}
+		
+	</style>
+    
+</head>
+<body onload="getExternalIpAddress()">
+	<div id="response"></div>
+</body>
+</html>

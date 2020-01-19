@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+    <name>Network</name>
+    <version>1.1</version>
+    <author name="Kirk Ouimet">
+        <info url="github.com/veso266/Network.gadget" />
+    </author>
+    <copyright>&#169; 2008</copyright>
+	<website>http://github.com/veso266/Network.gadget/</website>
+	<icons>
+    	<icon src="preview.png"/>
+	</icons>
+    <description>Displays your external IP address in a minimalistic style. Service provided by yougetsignal.com.</description>
+    <hosts>
+        <host name="sidebar">
+            <base type="HTML" apiVersion="1.0.0" src="network.html" />
+            <permissions>full</permissions>
+            <platform minPlatformVersion="1.0" />
+			<defaultImage src="preview.png" />
+        </host>
+    </hosts>
+</gadget>
